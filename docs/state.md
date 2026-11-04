@@ -14,7 +14,10 @@ Nenhum definido.
 
 ## Pendências
 
-- Não há arquivo versionado com as dependências e suas versões.
-- Antes de um deploy real: resolver os avisos de `check --deploy` e o limite de tentativas de login, que o PRD deixou fora do escopo.
+- Antes de um deploy real (revisão OWASP de 2026-11-04):
+  - Limitar tentativas de login e envios de comentário, que o PRD deixou fora do escopo.
+  - Tirar `DEBUG = True` do código, preencher `ALLOWED_HOSTS` e resolver os avisos de `check --deploy`.
+  - Registrar falhas de login e acessos negados, pois não há `LOGGING` configurado.
+- Melhoria menor de segurança: adicionar CSP.
 - As publicações iniciais usam "admin" como autor e têm todas a mesma data.
 - O painel, o login e o tema claro não foram conferidos no navegador depois da mudança de estilo.
