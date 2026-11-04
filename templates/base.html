@@ -1,0 +1,43 @@
+{% load static %}<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Blog{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/site.css' %}">
+</head>
+<body>
+  <header class="topo">
+    <div class="topo-interno">
+      <a class="marca" href="{% url 'posts:lista' %}">Blog</a>
+      <nav class="menu" aria-label="Principal">
+        {% if user.is_authenticated %}
+          <a href="{% url 'posts:painel' %}">Painel</a>
+          <form method="post" action="{% url 'contas:sair' %}">
+            {% csrf_token %}
+            <button type="submit" class="botao-link">Sair</button>
+          </form>
+        {% else %}
+          <a href="{% url 'contas:entrar' %}">Entrar</a>
+        {% endif %}
+      </nav>
+    </div>
+  </header>
+
+  <main class="conteudo">
+    {% if messages %}
+      <ul class="mensagens">
+        {% for message in messages %}
+          <li class="mensagem {{ message.tags }}" role="status">{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="rodape">
+    <p>Blog · {% now "Y" %}</p>
+  </footer>
+</body>
+</html>

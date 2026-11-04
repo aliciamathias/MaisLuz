@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Excluir post | Blog{% endblock %}
+
+{% block content %}
+  <section class="cartao">
+    <h1>Excluir post</h1>
+    <p>Tem certeza de que deseja excluir “{{ post.titulo }}”? Os comentários dele também serão excluídos.</p>
+    <form method="post">
+      {% csrf_token %}
+      <div class="acoes">
+        <button type="submit" class="botao-perigo">Excluir</button>
+        <a href="{% url 'posts:painel' %}">Cancelar</a>
+      </div>
+    </form>
+  </section>
+{% endblock %}
