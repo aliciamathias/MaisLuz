@@ -16,6 +16,7 @@
 - Em código Python, leia `.agents/skills/python-boas-praticas/SKILL.md`.
 - Em código Django, leia também `.agents/skills/django-boas-praticas/SKILL.md`.
 - Em rotas, permissões, autenticação, entrada de usuários, configurações, dependências ou revisões de segurança, leia `.agents/skills/seguranca-owasp/SKILL.md`.
+- Em templates HTML, componentes, folhas de estilo e acessibilidade, leia `.agents/skills/padroes-frontend.md` e `.agents/skills/acessibilidade-wcag.md`.
 
 # Outros documentos
 

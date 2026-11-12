@@ -1,6 +1,6 @@
 # Estado atual
 
-Atualizado em: 2026-11-04
+Atualizado em: 2026-11-11
 
 Este arquivo guarda apenas o que não está em outro lugar. Mantenha-o com cerca de 30 linhas e retire o que estiver resolvido. O status de cada documento fica no próprio documento, e o histórico fica no Git.
 
@@ -10,7 +10,9 @@ Nada.
 
 ## Próximos passos
 
-Nenhum definido.
+- Configurar conexão com PostgreSQL e dependência do driver (`psycopg`) em `core/settings.py` e `.env`.
+- Elaborar especificações técnicas em `docs/specs/` para o projeto MaisLuz.
+- Aplicar diretrizes de frontend (acessibilidade WCAG 2.1 AA e padrões de modularização/CSS) nos templates e arquivos estáticos.
 
 ## Pendências
 
