@@ -1,0 +1,651 @@
+{% extends 'base_interno.html' %}
+{% load static %}
+
+{% block title %}Cadastro de Atendente • Administração • MaisLuz Maceió{% endblock %}
+
+{% block breadcrumb %}Atendentes{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/cadastro-atendente.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="cadastro-atendente">
+  <!-- Cabeçalho da Página -->
+  <header class="cadastro-atendente__cabecalho">
+    <p class="cadastro-atendente__kicker">Pessoas e Acesso</p>
+    <div class="cadastro-atendente__titulo-linha">
+      <div>
+        <h1 class="cadastro-atendente__titulo">Cadastro de atendente</h1>
+        <p class="cadastro-atendente__descricao">
+          Preencha os dados abaixo para registrar um novo membro na equipe de iluminação pública.
+        </p>
+      </div>
+      <div class="cadastro-atendente__estatisticas" aria-label="Estatísticas de usuários">
+        <span><strong>10</strong> usuários cadastrados</span>
+        <span aria-hidden="true">•</span>
+        <span class="estatistica--ativo"><strong>8</strong> ativos</span>
+        <span aria-hidden="true">•</span>
+        <span class="estatistica--inativo"><strong>2</strong> inativos</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Formulário de Cadastro -->
+  <section class="cartao form-cartao" aria-labelledby="titulo-novo-funcionario">
+    <h2 id="titulo-novo-funcionario" class="cartao-titulo">Novo funcionário</h2>
+
+    <form class="cadastro-form" method="post" action="#">
+      {% csrf_token %}
+
+      <!-- Seção 01: Dados Pessoais -->
+      <fieldset class="form-secao">
+        <legend class="form-secao__titulo">
+          <span class="form-secao__numero">01</span>
+          <span>Dados Pessoais</span>
+        </legend>
+
+        <div class="form-grid">
+          <div class="campo-grupo">
+            <label for="id_cpf" class="campo-label">
+              CPF * <span class="campo-dica">(chave única)</span>
+            </label>
+            <input 
+              type="text" 
+              id="id_cpf" 
+              name="cpf" 
+              class="campo-input" 
+              placeholder="XXX.XXX.XXX-XX" 
+              required
+              maxlength="14"
+              autocomplete="off"
+            >
+          </div>
+
+          <div class="campo-grupo">
+            <label for="id_matricula" class="campo-label">Matrícula Funcional</label>
+            <input 
+              type="text" 
+              id="id_matricula" 
+              name="matricula" 
+              class="campo-input" 
+              placeholder="Informe a matrícula"
+              autocomplete="off"
+            >
+          </div>
+
+          <div class="campo-grupo">
+            <label for="id_nome" class="campo-label">Nome *</label>
+            <input 
+              type="text" 
+              id="id_nome" 
+              name="nome" 
+              class="campo-input" 
+              placeholder="Nome completo do funcionário" 
+              required
+              autocomplete="name"
+            >
+          </div>
+
+          <div class="campo-grupo">
+            <label for="id_cargo" class="campo-label">Cargo</label>
+            <input 
+              type="text" 
+              id="id_cargo" 
+              name="cargo" 
+              class="campo-input" 
+              placeholder="Informe o cargo"
+              value="Atendente"
+              autocomplete="organization-title"
+            >
+          </div>
+
+          <div class="campo-grupo">
+            <label for="id_senha" class="campo-label">Senha *</label>
+            <div class="campo-input-icone">
+              <input 
+                type="password" 
+                id="id_senha" 
+                name="senha" 
+                class="campo-input" 
+                placeholder="Crie uma senha segura" 
+                required
+                autocomplete="new-password"
+              >
+              <button type="button" class="btn-mostrar-senha" aria-label="Mostrar ou ocultar senha">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="campo-grupo">
+            <label for="id_confirmacao_senha" class="campo-label">Confirmação da Senha *</label>
+            <div class="campo-input-icone">
+              <input 
+                type="password" 
+                id="id_confirmacao_senha" 
+                name="confirmacao_senha" 
+                class="campo-input" 
+                placeholder="Repita sua senha" 
+                required
+                autocomplete="new-password"
+              >
+              <button type="button" class="btn-mostrar-senha" aria-label="Mostrar ou ocultar confirmação da senha">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- Seção 02: Contatos / Segurança -->
+      <fieldset class="form-secao">
+        <legend class="form-secao__titulo">
+          <span class="form-secao__numero">02</span>
+          <span>Contatos / Segurança</span>
+        </legend>
+
+        <div class="form-grid">
+          <div class="campo-grupo">
+            <label for="id_celular" class="campo-label">Celular *</label>
+            <input 
+              type="tel" 
+              id="id_celular" 
+              name="celular" 
+              class="campo-input" 
+              placeholder="(82) 9XXXX-XXXX" 
+              required
+              autocomplete="tel"
+            >
+          </div>
+
+          <div class="campo-grupo">
+            <label for="id_email" class="campo-label">E-mail *</label>
+            <input 
+              type="email" 
+              id="id_email" 
+              name="email" 
+              class="campo-input" 
+              placeholder="usuario@maceio.al.gov" 
+              required
+              autocomplete="email"
+            >
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- Botões de Ação do Formulário -->
+      <div class="form-acoes">
+        <button type="button" class="btn btn--outline" id="btn-abrir-cancelar">
+          Cancelar
+        </button>
+        <button type="submit" class="btn btn--primario-amarelo">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          <span>Salvar</span>
+        </button>
+      </div>
+    </form>
+  </section>
+
+  <!-- Modal Acessível de Cancelamento de Cadastro -->
+  <div id="modal-cancelar" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-cancelar-titulo" hidden style="display: none;">
+    <div class="modal-caixa">
+      <div class="modal-cabecalho">
+        <div class="modal-icone-alerta" aria-hidden="true">⚠️</div>
+        <h2 id="modal-cancelar-titulo" class="modal-titulo">Cancelar cadastro?</h2>
+      </div>
+      <p class="modal-texto">
+        As informações não salvas serão perdidas. Deseja realmente cancelar este cadastro?
+      </p>
+      <div class="modal-acoes">
+        <button type="button" class="btn btn--outline" id="btn-continuar-editando">
+          Continuar editando
+        </button>
+        <button type="button" class="btn btn--perigo" id="btn-confirmar-cancelar">
+          Sim, cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabela de Atendentes Cadastrados -->
+  <section class="cartao tabela-cartao" aria-labelledby="titulo-tabela-atendentes">
+    <div class="cartao-cabecalho">
+      <div>
+        <h2 id="titulo-tabela-atendentes" class="cartao-titulo">Atendentes cadastrados</h2>
+        <p class="cartao-subtitulo">10 registros fictícios • Todos os dados abaixo são exemplos.</p>
+      </div>
+
+      <div class="tabela-busca">
+        <label for="busca-atendente" class="sr-only">Buscar por nome ou CPF</label>
+        <div class="tabela-busca__wrapper">
+          <svg class="tabela-busca__icone" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input 
+            type="search" 
+            id="busca-atendente" 
+            class="tabela-busca__input" 
+            placeholder="Buscar por nome ou CPF"
+          >
+        </div>
+      </div>
+    </div>
+
+    <div class="tabela-container">
+      <table class="tabela-atendentes">
+        <caption class="sr-only">Listagem dos atendentes do sistema de iluminação pública</caption>
+        <thead>
+          <tr>
+            <th scope="col">Usuário de exemplo</th>
+            <th scope="col">CPF (mascarado)</th>
+            <th scope="col">Perfil de acesso</th>
+            <th scope="col">Segurança</th>
+            <th scope="col">Situação</th>
+            <th scope="col" class="tabela-col-acoes">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="tabela-usuario-celula">
+              <span class="usuario-avatar-circulo" aria-hidden="true">A</span>
+              <span>Atendente Alfa</span>
+            </td>
+            <td class="tabela-cpf">***.***.***-**</td>
+            <td>Atendente</td>
+            <td class="tabela-seguranca">
+              <span class="seguranca-icone" aria-hidden="true">🛡️</span>
+              <span>2FA habilitado</span>
+            </td>
+            <td><span class="badge badge--ativo">Ativo</span></td>
+            <td class="tabela-col-acoes">
+              <button type="button" class="btn-tabela-acao" aria-label="Editar Atendente Alfa">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M12 20h9"></path>
+                  <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                </svg>
+              </button>
+              <button type="button" class="btn-tabela-acao" aria-label="Mais opções para Atendente Alfa">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="1"></circle>
+                  <circle cx="19" cy="12" r="1"></circle>
+                  <circle cx="5" cy="12" r="1"></circle>
+                </svg>
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td class="tabela-usuario-celula">
+              <span class="usuario-avatar-circulo" aria-hidden="true">B</span>
+              <span>Atendente Beta</span>
+            </td>
+            <td class="tabela-cpf">***.***.***-**</td>
+            <td>Atendente</td>
+            <td class="tabela-seguranca">
+              <span class="seguranca-icone" aria-hidden="true">🛡️</span>
+              <span>2FA habilitado</span>
+            </td>
+            <td><span class="badge badge--ativo">Ativo</span></td>
+            <td class="tabela-col-acoes">
+              <button type="button" class="btn-tabela-acao" aria-label="Editar Atendente Beta">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M12 20h9"></path>
+                  <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                </svg>
+              </button>
+              <button type="button" class="btn-tabela-acao" aria-label="Mais opções para Atendente Beta">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="1"></circle>
+                  <circle cx="19" cy="12" r="1"></circle>
+                  <circle cx="5" cy="12" r="1"></circle>
+                </svg>
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td class="tabela-usuario-celula">
+              <span class="usuario-avatar-circulo" aria-hidden="true">G</span>
+              <span>Atendente Gama</span>
+            </td>
+            <td class="tabela-cpf">***.***.***-**</td>
+            <td>Supervisor</td>
+            <td class="tabela-seguranca">
+              <span class="seguranca-icone" aria-hidden="true">🛡️</span>
+              <span>2FA habilitado</span>
+            </td>
+            <td><span class="badge badge--ativo">Ativo</span></td>
+            <td class="tabela-col-acoes">
+              <button type="button" class="btn-tabela-acao" aria-label="Editar Atendente Gama">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M12 20h9"></path>
+                  <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                </svg>
+              </button>
+              <button type="button" class="btn-tabela-acao" aria-label="Mais opções para Atendente Gama">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="1"></circle>
+                  <circle cx="19" cy="12" r="1"></circle>
+                  <circle cx="5" cy="12" r="1"></circle>
+                </svg>
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td class="tabela-usuario-celula">
+              <span class="usuario-avatar-circulo" aria-hidden="true">D</span>
+              <span>Atendente Delta</span>
+            </td>
+            <td class="tabela-cpf">***.***.***-**</td>
+            <td>Atendente</td>
+            <td class="tabela-seguranca">
+              <span class="seguranca-icone" aria-hidden="true">🛡️</span>
+              <span>2FA habilitado</span>
+            </td>
+            <td><span class="badge badge--ativo">Ativo</span></td>
+            <td class="tabela-col-acoes">
+              <button type="button" class="btn-tabela-acao" aria-label="Editar Atendente Delta">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M12 20h9"></path>
+                  <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                </svg>
+              </button>
+              <button type="button" class="btn-tabela-acao" aria-label="Mais opções para Atendente Delta">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="1"></circle>
+                  <circle cx="19" cy="12" r="1"></circle>
+                  <circle cx="5" cy="12" r="1"></circle>
+                </svg>
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td class="tabela-usuario-celula">
+              <span class="usuario-avatar-circulo" aria-hidden="true">É</span>
+              <span>Atendente Épsilon</span>
+            </td>
+            <td class="tabela-cpf">***.***.***-**</td>
+            <td>Atendente</td>
+            <td class="tabela-seguranca">
+              <span class="seguranca-icone" aria-hidden="true">🛡️</span>
+              <span>2FA habilitado</span>
+            </td>
+            <td><span class="badge badge--inativo">Inativo</span></td>
+            <td class="tabela-col-acoes">
+              <button type="button" class="btn-tabela-acao" aria-label="Editar Atendente Épsilon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M12 20h9"></path>
+                  <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                </svg>
+              </button>
+              <button type="button" class="btn-tabela-acao" aria-label="Mais opções para Atendente Épsilon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="1"></circle>
+                  <circle cx="19" cy="12" r="1"></circle>
+                  <circle cx="5" cy="12" r="1"></circle>
+                </svg>
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td class="tabela-usuario-celula">
+              <span class="usuario-avatar-circulo" aria-hidden="true">Z</span>
+              <span>Atendente Zeta</span>
+            </td>
+            <td class="tabela-cpf">***.***.***-**</td>
+            <td>Atendente</td>
+            <td class="tabela-seguranca">
+              <span class="seguranca-icone" aria-hidden="true">🛡️</span>
+              <span>2FA habilitado</span>
+            </td>
+            <td><span class="badge badge--ativo">Ativo</span></td>
+            <td class="tabela-col-acoes">
+              <button type="button" class="btn-tabela-acao" aria-label="Editar Atendente Zeta">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M12 20h9"></path>
+                  <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                </svg>
+              </button>
+              <button type="button" class="btn-tabela-acao" aria-label="Mais opções para Atendente Zeta">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="1"></circle>
+                  <circle cx="19" cy="12" r="1"></circle>
+                  <circle cx="5" cy="12" r="1"></circle>
+                </svg>
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td class="tabela-usuario-celula">
+              <span class="usuario-avatar-circulo" aria-hidden="true">E</span>
+              <span>Atendente Eta</span>
+            </td>
+            <td class="tabela-cpf">***.***.***-**</td>
+            <td>Supervisor</td>
+            <td class="tabela-seguranca">
+              <span class="seguranca-icone" aria-hidden="true">🛡️</span>
+              <span>2FA habilitado</span>
+            </td>
+            <td><span class="badge badge--ativo">Ativo</span></td>
+            <td class="tabela-col-acoes">
+              <button type="button" class="btn-tabela-acao" aria-label="Editar Atendente Eta">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M12 20h9"></path>
+                  <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                </svg>
+              </button>
+              <button type="button" class="btn-tabela-acao" aria-label="Mais opções para Atendente Eta">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="1"></circle>
+                  <circle cx="19" cy="12" r="1"></circle>
+                  <circle cx="5" cy="12" r="1"></circle>
+                </svg>
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td class="tabela-usuario-celula">
+              <span class="usuario-avatar-circulo" aria-hidden="true">T</span>
+              <span>Atendente Teta</span>
+            </td>
+            <td class="tabela-cpf">***.***.***-**</td>
+            <td>Atendente</td>
+            <td class="tabela-seguranca">
+              <span class="seguranca-icone" aria-hidden="true">🛡️</span>
+              <span>2FA habilitado</span>
+            </td>
+            <td><span class="badge badge--ativo">Ativo</span></td>
+            <td class="tabela-col-acoes">
+              <button type="button" class="btn-tabela-acao" aria-label="Editar Atendente Teta">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M12 20h9"></path>
+                  <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                </svg>
+              </button>
+              <button type="button" class="btn-tabela-acao" aria-label="Mais opções para Atendente Teta">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="1"></circle>
+                  <circle cx="19" cy="12" r="1"></circle>
+                  <circle cx="5" cy="12" r="1"></circle>
+                </svg>
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td class="tabela-usuario-celula">
+              <span class="usuario-avatar-circulo" aria-hidden="true">I</span>
+              <span>Atendente Iota</span>
+            </td>
+            <td class="tabela-cpf">***.***.***-**</td>
+            <td>Atendente</td>
+            <td class="tabela-seguranca">
+              <span class="seguranca-icone" aria-hidden="true">🛡️</span>
+              <span>2FA habilitado</span>
+            </td>
+            <td><span class="badge badge--inativo">Inativo</span></td>
+            <td class="tabela-col-acoes">
+              <button type="button" class="btn-tabela-acao" aria-label="Editar Atendente Iota">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M12 20h9"></path>
+                  <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                </svg>
+              </button>
+              <button type="button" class="btn-tabela-acao" aria-label="Mais opções para Atendente Iota">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="1"></circle>
+                  <circle cx="19" cy="12" r="1"></circle>
+                  <circle cx="5" cy="12" r="1"></circle>
+                </svg>
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td class="tabela-usuario-celula">
+              <span class="usuario-avatar-circulo" aria-hidden="true">K</span>
+              <span>Atendente Kappa</span>
+            </td>
+            <td class="tabela-cpf">***.***.***-**</td>
+            <td>Atendente</td>
+            <td class="tabela-seguranca">
+              <span class="seguranca-icone" aria-hidden="true">🛡️</span>
+              <span>2FA habilitado</span>
+            </td>
+            <td><span class="badge badge--ativo">Ativo</span></td>
+            <td class="tabela-col-acoes">
+              <button type="button" class="btn-tabela-acao" aria-label="Editar Atendente Kappa">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M12 20h9"></path>
+                  <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                </svg>
+              </button>
+              <button type="button" class="btn-tabela-acao" aria-label="Mais opções para Atendente Kappa">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="1"></circle>
+                  <circle cx="19" cy="12" r="1"></circle>
+                  <circle cx="5" cy="12" r="1"></circle>
+                </svg>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Paginação -->
+    <nav class="tabela-paginacao" aria-label="Paginação da lista de atendentes">
+      <span class="tabela-paginacao__info">
+        Mostrando 1-10 de 10 atendentes
+      </span>
+      <div class="tabela-paginacao__direita">
+        <span class="tabela-paginacao__por-pagina">10 por página</span>
+        <ul class="tabela-paginacao__controles">
+          <li>
+            <button type="button" class="paginacao-btn" disabled aria-label="Página anterior">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+            </button>
+          </li>
+          <li>
+            <span class="paginacao-numero paginacao-numero--ativo" aria-current="page">1</span>
+          </li>
+          <li>
+            <button type="button" class="paginacao-btn" disabled aria-label="Próxima página">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </section>
+</div>
+
+<!-- Script Acessível para o Modal e Máscaras Básicas -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var btnAbrir = document.getElementById('btn-abrir-cancelar');
+    var modal = document.getElementById('modal-cancelar');
+    var btnContinuar = document.getElementById('btn-continuar-editando');
+    var btnConfirmar = document.getElementById('btn-confirmar-cancelar');
+
+    function abrirModal() {
+      if (!modal) return;
+      modal.removeAttribute('hidden');
+      modal.classList.add('is-aberto');
+      modal.style.display = 'flex';
+      if (btnContinuar) btnContinuar.focus();
+    }
+
+    function fecharModal() {
+      if (!modal) return;
+      modal.setAttribute('hidden', '');
+      modal.classList.remove('is-aberto');
+      modal.style.display = 'none';
+      if (btnAbrir) btnAbrir.focus();
+    }
+
+    if (btnAbrir) {
+      btnAbrir.addEventListener('click', function(e) {
+        e.preventDefault();
+        abrirModal();
+      });
+    }
+
+    if (btnContinuar) {
+      btnContinuar.addEventListener('click', function(e) {
+        e.preventDefault();
+        fecharModal();
+      });
+    }
+
+    if (btnConfirmar) {
+      btnConfirmar.addEventListener('click', function(e) {
+        e.preventDefault();
+        fecharModal();
+        window.location.href = "{% url 'ocorrencias_painel' %}";
+      });
+    }
+
+    if (modal) {
+      modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+          fecharModal();
+        }
+      });
+
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal.style.display === 'flex') {
+          fecharModal();
+        }
+      });
+    }
+
+    // Toggle de visualização de senha
+    var btnsSenha = document.querySelectorAll('.btn-mostrar-senha');
+    btnsSenha.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var input = this.parentElement.querySelector('input');
+        if (input) {
+          if (input.type === 'password') {
+            input.type = 'text';
+            this.setAttribute('aria-label', 'Ocultar senha');
+          } else {
+            input.type = 'password';
+            this.setAttribute('aria-label', 'Mostrar senha');
+          }
+        }
+      });
+    });
+  });
+</script>
+{% endblock %}

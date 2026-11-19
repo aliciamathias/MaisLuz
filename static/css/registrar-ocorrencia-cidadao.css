@@ -1,0 +1,639 @@
+/* ==========================================================================
+   registrar-ocorrencia-cidadao.css
+   Estilos específicos do Registro de Ocorrência (Área do Cidadão)
+   Consumo obrigatório das variáveis de root.css via var().
+   ========================================================================== */
+
+.registro-ocorrencia {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+/* Cabeçalho da Página */
+.registro-ocorrencia__cabecalho {
+  margin-bottom: 0.25rem;
+}
+
+.registro-ocorrencia__kicker {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--cor-azul-destaque);
+  margin: 0 0 0.375rem 0;
+}
+
+.registro-ocorrencia__titulo-linha {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 0.375rem;
+}
+
+.registro-ocorrencia__titulo {
+  font-size: 1.875rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: var(--cor-texto-principal);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.registro-ocorrencia__descricao {
+  font-size: 0.9375rem;
+  color: var(--cor-texto-secundario);
+  margin: 0;
+}
+
+/* Formulário Principal */
+.registro-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+/* Cartão de Etapa */
+.etapa-cartao {
+  background-color: var(--cor-fundo-cartao);
+  border: 1px solid var(--cor-borda-padrao);
+  border-radius: var(--raio-lg);
+  padding: 1.5rem;
+  box-shadow: var(--sombra-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.etapa-cartao__titulo {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--cor-texto-principal);
+  padding: 0;
+  margin: 0 0 0.5rem 0;
+  width: 100%;
+}
+
+.etapa-numero {
+  color: var(--cor-azul-destaque);
+  font-family: var(--fonte-mono);
+  font-weight: 800;
+}
+
+.etapa-instrucao {
+  font-size: 0.8125rem;
+  font-weight: normal;
+  color: var(--cor-texto-mutado);
+  margin-left: 0.25rem;
+}
+
+.etapa-subtexto {
+  font-size: 0.8125rem;
+  color: var(--cor-texto-mutado);
+  margin: -0.75rem 0 0 0;
+}
+
+/* Etapa 01: Cards de Opções de Problema */
+.opcoes-problema-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.25rem;
+}
+
+.opcao-card {
+  position: relative;
+  background-color: var(--cor-fundo-cartao);
+  border: 2px solid var(--cor-borda-padrao);
+  border-radius: var(--raio-lg);
+  padding: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+.opcao-card:hover {
+  border-color: var(--cor-azul-destaque);
+  background-color: var(--cor-azul-claro);
+}
+
+.opcao-card--selecionada {
+  border-color: var(--cor-azul-escuro);
+  background-color: var(--cor-azul-claro);
+  box-shadow: var(--sombra-md);
+}
+
+.opcao-card__icone {
+  width: 46px;
+  height: 46px;
+  border-radius: var(--raio-md);
+  background-color: var(--cor-fundo-cartao);
+  border: 1px solid var(--cor-borda-padrao);
+  color: var(--cor-azul-escuro);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.opcao-card--selecionada .opcao-card__icone {
+  background-color: var(--cor-azul-escuro);
+  color: var(--cor-texto-claro);
+  border-color: var(--cor-azul-escuro);
+}
+
+.opcao-card__texto {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  flex: 1;
+}
+
+.opcao-card__titulo {
+  font-size: 0.9375rem;
+  color: var(--cor-texto-principal);
+}
+
+.opcao-card__descricao {
+  font-size: 0.75rem;
+  color: var(--cor-texto-secundario);
+}
+
+.opcao-card__marcador {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid var(--cor-borda-padrao);
+  background-color: var(--cor-fundo-cartao);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.15s ease;
+}
+
+.opcao-card--selecionada .opcao-card__marcador {
+  border-color: var(--cor-azul-escuro);
+  background-color: var(--cor-azul-escuro);
+  box-shadow: inset 0 0 0 3px var(--cor-fundo-cartao);
+}
+
+/* Layout de 2 Colunas (Corpo) */
+.registro-corpo-grid {
+  display: grid;
+  grid-template-columns: 2fr 1.2fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.registro-coluna-principal {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.registro-coluna-lateral {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Busca de Endereço */
+.busca-endereco-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.busca-endereco-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.busca-endereco-input {
+  padding-right: 2.75rem;
+  font-weight: 500;
+}
+
+.btn-busca-endereco {
+  position: absolute;
+  right: 0.5rem;
+  background: none;
+  border: none;
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--cor-texto-secundario);
+  cursor: pointer;
+  border-radius: var(--raio-sm);
+  transition: background-color 0.15s ease;
+}
+
+.btn-busca-endereco:hover {
+  background-color: var(--cor-fundo-cinza);
+  color: var(--cor-azul-escuro);
+}
+
+/* Mapa Cidadão */
+.cidadao-mapa {
+  position: relative;
+  width: 100%;
+  height: 320px;
+  background-color: var(--cor-fundo-alternativo);
+  border: 1px solid var(--cor-borda-padrao);
+  border-radius: var(--raio-md);
+  overflow: hidden;
+  display: flex;
+}
+
+.cidadao-mapa__lagoa {
+  width: 20%;
+  height: 100%;
+  background-color: var(--cor-azul-litoral);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--cor-azul-noturno);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-align: center;
+  padding: 0.5rem;
+}
+
+.cidadao-mapa__cidade {
+  flex: 1;
+  position: relative;
+  background-color: var(--cor-fundo-cartao);
+  background-image: 
+    linear-gradient(to right, var(--cor-borda-padrao) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--cor-borda-padrao) 1px, transparent 1px);
+  background-size: 35px 35px;
+}
+
+.cidadao-mapa__capital {
+  position: absolute;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  color: var(--cor-texto-mutado);
+  background-color: rgba(255, 255, 255, 0.85);
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--raio-sm);
+  border: 1px solid var(--cor-borda-padrao);
+}
+
+.cidadao-mapa__bairro {
+  position: absolute;
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--cor-texto-secundario);
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 0.1rem 0.35rem;
+  border-radius: var(--raio-sm);
+  pointer-events: none;
+}
+
+.cidadao-mapa__bairro--jacintinho { top: 20%; left: 30%; }
+.cidadao-mapa__bairro--jatiuca { top: 12%; left: 60%; }
+.cidadao-mapa__bairro--mangabeiras { top: 32%; left: 45%; }
+.cidadao-mapa__bairro--ponta-verde { top: 45%; left: 70%; }
+.cidadao-mapa__bairro--pajucara { top: 68%; left: 55%; }
+.cidadao-mapa__bairro--centro { bottom: 12%; left: 25%; }
+
+/* Pino Marcador Interativo */
+.cidadao-mapa__pin-wrapper {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 10;
+}
+
+.cidadao-mapa__pin {
+  color: var(--cor-azul-escuro);
+  filter: drop-shadow(0 2px 4px rgba(18, 40, 89, 0.3));
+}
+
+.cidadao-mapa__pulsar {
+  width: 14px;
+  height: 14px;
+  background-color: rgba(30, 58, 138, 0.25);
+  border-radius: 50%;
+  margin-top: -6px;
+  animation: pulsar 2s infinite ease-out;
+}
+
+@keyframes pulsar {
+  0% { transform: scale(0.8); opacity: 1; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+.cidadao-mapa__oceano {
+  width: 22%;
+  height: 100%;
+  background: radial-gradient(circle at 100% 50%, var(--cor-azul-mapa) 0%, var(--cor-azul-litoral) 100%);
+  border-left: 2px solid var(--cor-amarelo-borda);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--cor-azul-noturno);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  padding: 0.5rem;
+  text-align: center;
+}
+
+/* Informações do Local Marcado */
+.local-marcado-resumo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--cor-azul-claro);
+  border: 1px solid var(--cor-borda-clara);
+  border-radius: var(--raio-md);
+  padding: 0.75rem 1rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.local-marcado-texto {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--cor-azul-escuro);
+}
+
+/* Campos de Endereço */
+.endereco-campos-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+  width: 100%;
+}
+
+.campo-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  width: 100%;
+}
+
+.campo-label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--cor-texto-principal);
+  display: block;
+}
+
+.campo-input {
+  width: 100%;
+  padding: 0.625rem 0.875rem;
+  font-family: inherit;
+  font-size: 0.875rem;
+  color: var(--cor-texto-principal);
+  background-color: var(--cor-fundo-pagina);
+  border: 1px solid var(--cor-borda-padrao);
+  border-radius: var(--raio-md);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  min-height: 44px;
+  box-sizing: border-box;
+}
+
+.campo-input:focus {
+  border-color: var(--cor-foco);
+  outline: none;
+  box-shadow: var(--sombra-foco);
+}
+
+.campo-input::placeholder {
+  color: var(--cor-texto-mutado);
+  opacity: 0.7;
+}
+
+.campo-grupo--completo {
+  grid-column: 1 / -1;
+}
+
+.campo-textarea {
+  resize: vertical;
+  min-height: 90px;
+  padding: 0.75rem 0.875rem;
+  font-family: inherit;
+}
+
+/* Alerta de Acompanhamento */
+.alerta-acompanhamento {
+  background-color: var(--cor-fundo-cartao);
+  border: 1px solid var(--cor-borda-padrao);
+  border-radius: var(--raio-md);
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.875rem;
+  font-size: 0.8125rem;
+  color: var(--cor-texto-secundario);
+}
+
+.alerta-acompanhamento strong {
+  display: block;
+  color: var(--cor-texto-principal);
+  margin-bottom: 0.25rem;
+}
+
+.alerta-acompanhamento p {
+  margin: 0;
+  line-height: 1.4;
+}
+
+.alerta-acompanhamento__icone {
+  color: var(--cor-azul-destaque);
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+}
+
+/* Etapa 03: Foto */
+.upload-previa {
+  position: relative;
+  border: 1px solid var(--cor-borda-padrao);
+  border-radius: var(--raio-md);
+  overflow: hidden;
+  background-color: var(--cor-azul-suave);
+}
+
+.upload-previa__etiqueta {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  background-color: rgba(23, 43, 77, 0.7);
+  color: var(--cor-texto-claro);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--raio-sm);
+  z-index: 2;
+}
+
+.upload-previa__ilustracao {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.upload-arquivo-barra {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 0.875rem;
+  background-color: var(--cor-fundo-pagina);
+  border: 1px solid var(--cor-borda-padrao);
+  border-radius: var(--raio-md);
+}
+
+.upload-arquivo-info {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.upload-arquivo-info svg {
+  color: var(--cor-texto-mutado);
+  flex-shrink: 0;
+}
+
+.upload-arquivo-nome {
+  display: block;
+  font-size: 0.8125rem;
+  color: var(--cor-texto-principal);
+}
+
+.upload-arquivo-meta {
+  display: block;
+  font-size: 0.6875rem;
+  color: var(--cor-texto-mutado);
+}
+
+.btn-remover-foto {
+  background: none;
+  border: none;
+  padding: 0.375rem;
+  color: var(--cor-texto-mutado);
+  cursor: pointer;
+  border-radius: var(--raio-sm);
+  transition: color 0.15s ease;
+}
+
+.btn-remover-foto:hover {
+  color: var(--cor-vermelho-alerta);
+}
+
+.upload-acoes {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn-substituir-foto {
+  font-size: 0.8125rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+.upload-formato-dica {
+  font-size: 0.75rem;
+  color: var(--cor-texto-mutado);
+}
+
+/* Card de Alerta de Risco Imediato */
+.alerta-risco {
+  background-color: var(--cor-amarelo-fundo);
+  border: 1px solid var(--cor-amarelo-borda);
+  border-radius: var(--raio-lg);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.alerta-risco__cabecalho {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.alerta-risco__icone {
+  color: var(--cor-amarelo-escuro);
+  flex-shrink: 0;
+}
+
+.alerta-risco__titulo {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--cor-amarelo-escuro);
+  margin: 0;
+}
+
+.alerta-risco__texto {
+  font-size: 0.8125rem;
+  color: var(--cor-texto-escuro);
+  margin: 0;
+  line-height: 1.45;
+}
+
+.alerta-risco__texto strong {
+  color: var(--cor-texto-principal);
+}
+
+/* Barra de Ações Finais */
+.registro-acoes-barra {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--cor-borda-padrao);
+}
+
+.btn--enviar {
+  min-width: 190px;
+}
+
+/* Responsividade */
+@media (max-width: 992px) {
+  .registro-corpo-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .endereco-campos-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .registro-acoes-barra {
+    flex-direction: column-reverse;
+  }
+
+  .registro-acoes-barra .btn {
+    width: 100%;
+  }
+}

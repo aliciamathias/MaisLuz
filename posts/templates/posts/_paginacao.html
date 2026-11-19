@@ -1,7 +1,0 @@
-{% if pagina.has_other_pages %}
-  <nav class="paginacao" aria-label="Paginação">
-    <span>{% if pagina.has_previous %}<a href="?pagina={{ pagina.previous_page_number }}">Anterior</a>{% endif %}</span>
-    <span>Página {{ pagina.number }} de {{ pagina.paginator.num_pages }}</span>
-    <span>{% if pagina.has_next %}<a href="?pagina={{ pagina.next_page_number }}">Próxima</a>{% endif %}</span>
-  </nav>
-{% endif %}

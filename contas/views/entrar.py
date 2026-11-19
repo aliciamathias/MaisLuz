@@ -20,7 +20,7 @@ def _destino_seguro(request: HttpRequest, destino: str | None) -> str | None:
 class EntrarView(View):
     def get(self, request):
         if request.user.is_authenticated:
-            return redirect("posts:painel")
+            return redirect("ocorrencias_painel")
         contexto = {
             "form": AuthenticationForm(request),
             "next": _destino_seguro(request, request.GET.get("next")),
@@ -35,4 +35,4 @@ class EntrarView(View):
         login(request, form.get_user())
         # HttpResponseRedirect, e não redirect(): redirect() tentaria resolver um
         # `next` sem barra como nome de rota e falharia com NoReverseMatch.
-        return HttpResponseRedirect(destino or reverse("posts:painel"))
+        return HttpResponseRedirect(destino or reverse("ocorrencias_painel"))

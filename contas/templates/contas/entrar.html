@@ -1,15 +1,27 @@
-{% extends "base.html" %}
+{% extends "base_publico.html" %}
 
-{% block title %}Entrar | Blog{% endblock %}
+{% block title %}Entrar • MaisLuz Maceió{% endblock %}
 
 {% block content %}
+<div style="max-width: 440px; margin: 2rem auto;">
   <section class="cartao">
-    <h1>Entrar</h1>
-    <form method="post" action="{% url 'contas:entrar' %}">
+    <div class="cartao-cabecalho">
+      <div>
+        <h1 class="cartao-titulo">Entrar no MaisLuz</h1>
+        <p class="cartao-subtitulo">Informe suas credenciais para acessar o sistema.</p>
+      </div>
+    </div>
+
+    <form method="post" action="{% url 'contas:entrar' %}" class="cadastro-form" style="margin-top: 1rem;">
       {% csrf_token %}
-      {{ form }}
+      {{ form.as_p }}
       {% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}
-      <button type="submit">Entrar</button>
+      <div style="margin-top: 1.5rem;">
+        <button type="submit" class="btn btn--primario-amarelo" style="width: 100%;">
+          Entrar
+        </button>
+      </div>
     </form>
   </section>
+</div>
 {% endblock %}

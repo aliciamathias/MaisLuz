@@ -23,7 +23,7 @@ class EntrarViewTests(TestCase):
     def test_credenciais_validas_redirecionam_para_o_painel(self):
         resposta = self._entrar()
 
-        self.assertRedirects(resposta, reverse("posts:painel"))
+        self.assertRedirects(resposta, reverse("ocorrencias_painel"))
         self.assertIn("_auth_user_id", self.client.session)
 
     def test_senha_errada_nao_cria_sessao_e_mostra_erro(self):
@@ -51,7 +51,7 @@ class EntrarViewTests(TestCase):
         self.assertNotIn("_auth_user_id", self.client.session)
 
     def test_next_interno_e_respeitado(self):
-        destino = reverse("posts:criar")
+        destino = reverse("cadastro_atendente")
 
         resposta = self._entrar(next=destino)
 
@@ -60,7 +60,7 @@ class EntrarViewTests(TestCase):
     def test_next_externo_e_ignorado(self):
         resposta = self._entrar(next="https://exemplo.com")
 
-        self.assertRedirects(resposta, reverse("posts:painel"))
+        self.assertRedirects(resposta, reverse("ocorrencias_painel"))
 
     def test_next_sem_barra_nao_e_tratado_como_nome_de_rota(self):
         resposta = self._entrar(next="sem-barra")
@@ -69,9 +69,9 @@ class EntrarViewTests(TestCase):
         self.assertEqual(resposta.url, "sem-barra")
 
     def test_get_repassa_next_interno_em_campo_oculto(self):
-        resposta = self.client.get(self.url, {"next": "/painel/"})
+        resposta = self.client.get(self.url, {"next": "/ocorrencias/painel/"})
 
-        self.assertContains(resposta, '<input type="hidden" name="next" value="/painel/">', html=True)
+        self.assertContains(resposta, '<input type="hidden" name="next" value="/ocorrencias/painel/">', html=True)
 
     def test_get_descarta_next_externo(self):
         resposta = self.client.get(self.url, {"next": "https://exemplo.com"})
@@ -79,16 +79,16 @@ class EntrarViewTests(TestCase):
         self.assertNotContains(resposta, "exemplo.com")
 
     def test_post_invalido_mantem_next_no_formulario(self):
-        resposta = self._entrar(senha="errada", next="/painel/")
+        resposta = self._entrar(senha="errada", next="/ocorrencias/painel/")
 
-        self.assertContains(resposta, '<input type="hidden" name="next" value="/painel/">', html=True)
+        self.assertContains(resposta, '<input type="hidden" name="next" value="/ocorrencias/painel/">', html=True)
 
     def test_usuario_autenticado_e_redirecionado_para_o_painel(self):
         self.client.force_login(self.autor)
 
         resposta = self.client.get(self.url)
 
-        self.assertRedirects(resposta, reverse("posts:painel"))
+        self.assertRedirects(resposta, reverse("ocorrencias_painel"))
 
 
 class SairViewTests(TestCase):
@@ -102,7 +102,7 @@ class SairViewTests(TestCase):
 
         resposta = self.client.post(self.url)
 
-        self.assertRedirects(resposta, reverse("posts:lista"))
+        self.assertRedirects(resposta, reverse("registrar_ocorrencia"))
         self.assertNotIn("_auth_user_id", self.client.session)
 
     def test_get_retorna_405_e_mantem_a_sessao(self):
@@ -120,23 +120,8 @@ class SairViewTests(TestCase):
 
 
 class LayoutBaseTests(TestCase):
-    def test_visitante_ve_o_link_entrar(self):
-        resposta = self.client.get(reverse("posts:lista"))
-
-        self.assertContains(resposta, f'href="{reverse("contas:entrar")}"')
-        self.assertNotContains(resposta, reverse("contas:sair"))
-
-    def test_autor_ve_painel_e_botao_sair(self):
-        self.client.force_login(get_user_model().objects.create_user("autora"))
-
-        resposta = self.client.get(reverse("posts:lista"))
-
-        self.assertContains(resposta, f'href="{reverse("posts:painel")}"')
-        self.assertContains(resposta, f'action="{reverse("contas:sair")}"')
-        self.assertNotContains(resposta, f'href="{reverse("contas:entrar")}"')
-
     def test_html_declara_idioma_e_viewport(self):
-        resposta = self.client.get(reverse("posts:lista"))
+        resposta = self.client.get(reverse("registrar_ocorrencia"))
 
         self.assertContains(resposta, '<html lang="pt-br">')
         self.assertContains(resposta, 'name="viewport"')

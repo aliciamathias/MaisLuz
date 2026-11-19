@@ -1,0 +1,46 @@
+{% load static %}
+<header class="publico-cabecalho" role="banner">
+  <div class="publico-cabecalho__container">
+    <a href="{% url 'registrar_ocorrencia' %}" class="marca-bloco" aria-label="MaisLuz Maceió - Página inicial do cidadão">
+      <div class="marca-icone" aria-hidden="true">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 18h6"></path>
+          <path d="M10 22h4"></path>
+          <path d="M12 2a7 7 0 0 0-7 7c0 2.5 1.5 4.5 3 6h8c1.5-1.5 3-3.5 3-6a7 7 0 0 0-7-7z"></path>
+        </svg>
+      </div>
+      <div class="marca-texto">
+        <span class="marca-titulo">MaisLuz</span>
+        <span class="marca-subtitulo">Iluminação Pública • Maceió</span>
+      </div>
+    </a>
+
+    <nav class="publico-nav" aria-label="Navegação principal do cidadão">
+      <ul class="publico-nav__lista">
+        <li>
+          <a href="{% url 'registrar_ocorrencia' %}" class="publico-nav__link" {% if request.resolver_match.url_name == 'registrar_ocorrencia' or not request.resolver_match.url_name %}aria-current="page"{% endif %}>
+            Registrar ocorrência
+          </a>
+        </li>
+        <li>
+          <a href="#" class="publico-nav__link">
+            Minhas ocorrências
+          </a>
+        </li>
+        <li>
+          <a href="#" class="publico-nav__link">
+            Ajuda
+          </a>
+        </li>
+      </ul>
+
+      <div class="publico-usuario" aria-label="Perfil do usuário atual">
+        <span class="publico-usuario__avatar" aria-hidden="true">AC</span>
+        <span class="publico-usuario__nome">Ana • Cidadã</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </div>
+    </nav>
+  </div>
+</header>

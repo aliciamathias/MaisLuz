@@ -1,0 +1,90 @@
+/* ==========================================================================
+   root.css - Variáveis globais do sistema MaisLuz
+   Todas as cores repetitivas em formato hexadecimal são centralizadas aqui.
+   Consumo obrigatório via var(--nome-da-variavel).
+   ========================================================================== */
+
+:root {
+  /* Paleta Primária - Azul Noturno / Institucional */
+  --cor-azul-noturno: #122859;
+  --cor-azul-primario: #172B4D;
+  --cor-azul-escuro: #1E3A8A;
+  --cor-azul-ativo: #284581;
+  --cor-azul-hover: #1A3568;
+  --cor-azul-selecao: #3D579B;
+
+  /* Azuis de Destaque e Superfícies Suaves */
+  --cor-azul-destaque: #2563EB;
+  --cor-azul-claro: #EFF6FF;
+  --cor-azul-suave: #E8F0F2;
+  --cor-azul-mapa: #B8E4EF;
+  --cor-azul-litoral: #A6D7E0;
+
+  /* Superfícies Neutras e Fundos */
+  --cor-fundo-pagina: #F8FAFC;
+  --cor-fundo-cartao: #FFFFFF;
+  --cor-fundo-alternativo: #F7F7F1;
+  --cor-fundo-cinza: #F1F5F9;
+  --cor-fundo-bege: #EBEDE5;
+
+  /* Bordas e Linhas Divisórias */
+  --cor-borda-padrao: #DCE4EE;
+  --cor-borda-suave: #E2E8F0;
+  --cor-borda-clara: #C8D7F4;
+  --cor-borda-media: #D6E4EF;
+  --cor-borda-cartao: #E4E6DB;
+
+  /* Tipografia e Textos */
+  --cor-texto-principal: #172B4D;
+  --cor-texto-escuro: #1E293B;
+  --cor-texto-secundario: #506780;
+  --cor-texto-mutado: #64748B;
+  --cor-texto-subtitulo: #60716C;
+  --cor-texto-claro: #FFFFFF;
+
+  /* Amarelo e Ouro (MaisLuz Marca e Ação Principal) */
+  --cor-amarelo-marca: #EAB308;
+  --cor-amarelo-hover: #CA8A04;
+  --cor-amarelo-escuro: #A17600;
+  --cor-amarelo-dourado: #B48900;
+  --cor-amarelo-fundo: #FEF9E7;
+  --cor-amarelo-borda: #F2D18C;
+
+  /* Estados do Sistema - Verde (Concluída, Ativo, 2FA) */
+  --cor-verde-sucesso: #15803D;
+  --cor-verde-escuro: #14532D;
+  --cor-verde-fundo: #ECFDF3;
+  --cor-verde-borda: #C9DFBF;
+
+  /* Estados do Sistema - Amarelo/Âmbar (Em Manutenção) */
+  --cor-alerta-manutencao: #EAB308;
+  --cor-alerta-manutencao-escuro: #A17600;
+  --cor-alerta-manutencao-fundo: #FEF9E7;
+  --cor-alerta-manutencao-borda: #F2D18C;
+
+  /* Estados do Sistema - Vermelho (Aberta, Inativo, Perigo, Cancelar) */
+  --cor-vermelho-alerta: #EF4444;
+  --cor-vermelho-escuro: #B91C1C;
+  --cor-vermelho-fundo: #FEF2F2;
+  --cor-vermelho-borda: #FCA5A5;
+
+  /* Acessibilidade e Foco Visível (WCAG 2.1 AA) */
+  --cor-foco: #2563EB;
+  --sombra-foco: 0 0 0 3px rgba(37, 99, 235, 0.45);
+
+  /* Sombras e Elevação */
+  --sombra-sm: 0 1px 3px 0 rgba(18, 40, 89, 0.05);
+  --sombra-md: 0 4px 6px -1px rgba(18, 40, 89, 0.08), 0 2px 4px -2px rgba(18, 40, 89, 0.04);
+  --sombra-lg: 0 10px 15px -3px rgba(18, 40, 89, 0.1), 0 4px 6px -4px rgba(18, 40, 89, 0.05);
+
+  /* Raios de Arredondamento */
+  --raio-sm: 4px;
+  --raio-md: 8px;
+  --raio-lg: 12px;
+  --raio-xl: 16px;
+  --raio-pill: 9999px;
+
+  /* Tipografia */
+  --fonte-padrao: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --fonte-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}

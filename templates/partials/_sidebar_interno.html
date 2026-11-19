@@ -1,0 +1,109 @@
+{% load static %}
+<aside class="painel-sidebar" aria-label="Navegação do painel interno">
+  <div class="painel-sidebar__topo">
+    <a href="{% url 'ocorrencias_painel' %}" class="marca-bloco" aria-label="MaisLuz Maceió - Página inicial da operação">
+      <div class="marca-icone" aria-hidden="true">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 18h6"></path>
+          <path d="M10 22h4"></path>
+          <path d="M12 2a7 7 0 0 0-7 7c0 2.5 1.5 4.5 3 6h8c1.5-1.5 3-3.5 3-6a7 7 0 0 0-7-7z"></path>
+        </svg>
+      </div>
+      <div class="marca-texto">
+        <span class="marca-titulo">MaisLuz</span>
+        <span class="marca-subtitulo">Iluminação Pública • Maceió</span>
+      </div>
+    </a>
+  </div>
+
+  <p class="painel-sidebar__rotulo">
+    {% if is_admin or user.is_superuser or user.is_staff or perfil == 'administrador' %}
+      Área do Administrador
+    {% else %}
+      Área do Atendente
+    {% endif %}
+  </p>
+
+  <nav class="painel-nav" aria-label="Menu principal do operador">
+    <ul class="painel-nav__lista">
+      <li class="painel-nav__item">
+        <a href="#" class="painel-nav__link {% if nav_ativa == 'visao_geral' %}painel-nav__link--ativo{% endif %}">
+          <svg class="painel-nav__icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="3" width="7" height="7"></rect>
+            <rect x="14" y="3" width="7" height="7"></rect>
+            <rect x="14" y="14" width="7" height="7"></rect>
+            <rect x="3" y="14" width="7" height="7"></rect>
+          </svg>
+          <span>Visão geral</span>
+        </a>
+      </li>
+
+      <li class="painel-nav__item">
+        <a href="{% url 'ocorrencias_painel' %}" class="painel-nav__link {% if nav_ativa == 'ocorrencias' or not nav_ativa and not is_admin %}painel-nav__link--ativo{% endif %}" {% if nav_ativa == 'ocorrencias' or not nav_ativa and not is_admin %}aria-current="page"{% endif %}>
+          <svg class="painel-nav__icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+            <polyline points="10 9 9 9 8 9"></polyline>
+          </svg>
+          <span>Ocorrências</span>
+        </a>
+      </li>
+
+      {% comment %} Itens exclusivos de Administrador {% endcomment %}
+      {% if is_admin or user.is_superuser or user.is_staff or perfil == 'administrador' %}
+        <li class="painel-nav__item">
+          <a href="{% url 'cadastro_atendente' %}" class="painel-nav__link {% if nav_ativa == 'funcionarios' %}painel-nav__link--ativo{% endif %}">
+            <svg class="painel-nav__icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+            <span>Funcionários</span>
+          </a>
+          <ul class="painel-nav__sublista" aria-label="Submenu de funcionários">
+            <li>
+              <a href="{% url 'cadastro_atendente' %}" class="painel-nav__sublink {% if subnav_ativa == 'listagem' or nav_ativa == 'funcionarios' %}painel-nav__sublink--ativo{% endif %}" {% if subnav_ativa == 'listagem' or nav_ativa == 'funcionarios' %}aria-current="page"{% endif %}>
+                Listagem de funcionários
+              </a>
+            </li>
+            <li>
+              <a href="#" class="painel-nav__sublink {% if subnav_ativa == 'solicitacoes_senha' %}painel-nav__sublink--ativo{% endif %}">
+                Solicitações de Senha
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="painel-nav__item">
+          <a href="#" class="painel-nav__link {% if nav_ativa == 'configuracoes' %}painel-nav__link--ativo{% endif %}">
+            <svg class="painel-nav__icone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            </svg>
+            <span>Configurações</span>
+          </a>
+        </li>
+      {% endif %}
+    </ul>
+  </nav>
+
+  <div class="painel-sidebar__apoio" role="complementary" aria-label="Suporte ao operador">
+    <p class="painel-sidebar__apoio-titulo">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+        <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+      </svg>
+      <span>Precisa de apoio?</span>
+    </p>
+    <p class="painel-sidebar__apoio-desc">
+      Central de suporte interno<br>
+      Seg. a sex., das 8h às 18h
+    </p>
+    <p class="painel-sidebar__apoio-ramal">
+      Ramal 156 • Suporte
+    </p>
+  </div>
+</aside>

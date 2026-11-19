@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block layout %}
+<div class="publico-layout">
+  {% include 'partials/_header_publico.html' %}
+
+  <main id="conteudo-principal" class="publico-conteudo" tabindex="-1">
+    {% if messages %}
+      <div class="mensagens-container" role="region" aria-label="Mensagens do sistema">
+        {% for message in messages %}
+          <div class="mensagem mensagem--{{ message.tags }}" role="alert">
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  {% include 'partials/_footer_publico.html' %}
+</div>
+{% endblock %}

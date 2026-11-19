@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block layout %}
+<div class="painel-container">
+  {% include 'partials/_sidebar_interno.html' %}
+
+  <div class="painel-principal">
+    {% include 'partials/_topbar_interno.html' %}
+
+    <main id="conteudo-principal" class="painel-conteudo" tabindex="-1">
+      {% if messages %}
+        <div class="mensagens-container" role="region" aria-label="Mensagens do sistema">
+          {% for message in messages %}
+            <div class="mensagem mensagem--{{ message.tags }}" role="alert">
+              {{ message }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      {% block content %}{% endblock %}
+    </main>
+
+    {% include 'partials/_footer_interno.html' %}
+  </div>
+</div>
+{% endblock %}

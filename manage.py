@@ -6,6 +6,21 @@ import sys
 
 def main():
     """Run administrative tasks."""
+    import inspect
+    if not hasattr(inspect, "markcoroutinefunction"):
+        def markcoroutinefunction(func):
+            func._is_coroutine = getattr(inspect, "_is_coroutine", None)
+            return func
+        inspect.markcoroutinefunction = markcoroutinefunction
+
+    if sys.version_info < (3, 12):
+        import unittest
+        _orig_runner_init = unittest.TextTestRunner.__init__
+        def _compat_runner_init(self, *args, **kwargs):
+            kwargs.pop('durations', None)
+            return _orig_runner_init(self, *args, **kwargs)
+        unittest.TextTestRunner.__init__ = _compat_runner_init
+
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings')
     try:
         from django.core.management import execute_from_command_line

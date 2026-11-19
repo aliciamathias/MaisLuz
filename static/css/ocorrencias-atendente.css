@@ -1,0 +1,550 @@
+/* ==========================================================================
+   ocorrencias-atendente.css
+   Estilos específicos do Painel de Gestão de Ocorrências (Atendente/Administrador)
+   Consumo obrigatório das variáveis de root.css via var().
+   ========================================================================== */
+
+.painel-ocorrencias {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+/* Cabeçalho da Página */
+.painel-ocorrencias__cabecalho {
+  margin-bottom: 0.25rem;
+}
+
+.painel-ocorrencias__kicker {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--cor-azul-destaque);
+  margin: 0 0 0.375rem 0;
+}
+
+.painel-ocorrencias__titulo {
+  font-size: 1.875rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: var(--cor-texto-principal);
+  margin: 0 0 0.5rem 0;
+  line-height: 1.2;
+}
+
+.painel-ocorrencias__descricao {
+  font-size: 0.9375rem;
+  color: var(--cor-texto-secundario);
+  margin: 0;
+}
+
+/* Grid de Métricas / Cards de Resumo */
+.metricas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+
+.metrica-card {
+  background-color: var(--cor-fundo-cartao);
+  border: 1px solid var(--cor-borda-padrao);
+  border-radius: var(--raio-lg);
+  padding: 1.5rem;
+  box-shadow: var(--sombra-sm);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+
+.metrica-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 100%;
+}
+
+.metrica-card--abertas::before {
+  background-color: var(--cor-vermelho-alerta);
+}
+
+.metrica-card--manutencao::before {
+  background-color: var(--cor-alerta-manutencao);
+}
+
+.metrica-card--concluidas::before {
+  background-color: var(--cor-verde-sucesso);
+}
+
+.metrica-card__conteudo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.metrica-card__rotulo {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--cor-texto-secundario);
+}
+
+.metrica-card__valor {
+  font-size: 2.25rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--cor-texto-principal);
+  line-height: 1.1;
+}
+
+.metrica-card__info {
+  font-size: 0.8125rem;
+  color: var(--cor-texto-mutado);
+  margin-top: 0.25rem;
+}
+
+.metrica-card__icone {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.metrica-card__icone--abertas {
+  background-color: var(--cor-vermelho-fundo);
+  color: var(--cor-vermelho-alerta);
+}
+
+.metrica-card__icone--manutencao {
+  background-color: var(--cor-alerta-manutencao-fundo);
+  color: var(--cor-alerta-manutencao);
+}
+
+.metrica-card__icone--concluidas {
+  background-color: var(--cor-verde-fundo);
+  color: var(--cor-verde-sucesso);
+}
+
+/* Barra de Filtros */
+.filtros-secao {
+  background-color: var(--cor-fundo-cartao);
+  border: 1px solid var(--cor-borda-padrao);
+  border-radius: var(--raio-lg);
+  padding: 1rem 1.5rem;
+  box-shadow: var(--sombra-sm);
+}
+
+.filtros-form {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+}
+
+.filtro-campo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 180px;
+}
+
+.filtro-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--cor-texto-mutado);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.filtro-input-wrapper {
+  position: relative;
+}
+
+.filtro-select {
+  width: 100%;
+  padding: 0.5rem 2rem 0.5rem 0.875rem;
+  font-family: inherit;
+  font-size: 0.875rem;
+  color: var(--cor-texto-principal);
+  background-color: var(--cor-fundo-pagina);
+  border: 1px solid var(--cor-borda-padrao);
+  border-radius: var(--raio-md);
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1rem;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.filtro-select:focus {
+  border-color: var(--cor-foco);
+  outline: none;
+  box-shadow: var(--sombra-foco);
+}
+
+.filtros-total {
+  margin-left: auto;
+  font-size: 0.875rem;
+  color: var(--cor-texto-mutado);
+}
+
+.filtros-total strong {
+  color: var(--cor-texto-principal);
+}
+
+/* Card do Mapa Territorial */
+.mapa-cartao {
+  position: relative;
+}
+
+.mapa-legenda {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  font-size: 0.8125rem;
+  color: var(--cor-texto-secundario);
+}
+
+.mapa-legenda__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.ponto-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.ponto-dot--aberta {
+  background-color: var(--cor-vermelho-alerta);
+}
+
+.ponto-dot--manutencao {
+  background-color: var(--cor-alerta-manutencao);
+}
+
+.ponto-dot--concluida {
+  background-color: var(--cor-verde-sucesso);
+}
+
+/* Visualização Artística / Ilustrativa do Mapa de Maceió */
+.mapa-canvas {
+  position: relative;
+  width: 100%;
+  height: 380px;
+  background-color: var(--cor-fundo-alternativo);
+  border: 1px solid var(--cor-borda-padrao);
+  border-radius: var(--raio-lg);
+  overflow: hidden;
+  display: flex;
+  margin-top: 0.5rem;
+}
+
+/* Lagoa Mundaú na esquerda */
+.mapa-canvas__lagoa {
+  width: 20%;
+  height: 100%;
+  background-color: var(--cor-azul-litoral);
+  border-right: 2px dashed rgba(255, 255, 255, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--cor-azul-noturno);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 1rem;
+  text-align: center;
+}
+
+/* Cidade (Área Urbana com Malha Viária) */
+.mapa-canvas__cidade {
+  flex: 1;
+  position: relative;
+  background-color: var(--cor-fundo-cartao);
+  background-image: 
+    linear-gradient(to right, var(--cor-borda-padrao) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--cor-borda-padrao) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.mapa-canvas__capital {
+  position: absolute;
+  top: 1.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.875rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  color: var(--cor-texto-mutado);
+  background-color: rgba(255, 255, 255, 0.85);
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--raio-sm);
+  border: 1px solid var(--cor-borda-padrao);
+}
+
+.mapa-bairro {
+  position: absolute;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--cor-texto-secundario);
+  background-color: rgba(255, 255, 255, 0.75);
+  padding: 0.125rem 0.375rem;
+  border-radius: var(--raio-sm);
+  pointer-events: none;
+}
+
+.mapa-bairro--jacintinho { top: 22%; left: 35%; }
+.mapa-bairro--jatiuca { top: 15%; left: 65%; }
+.mapa-bairro--mangabeiras { top: 35%; left: 45%; }
+.mapa-bairro--ponta-verde { top: 48%; left: 75%; }
+.mapa-bairro--pajucara { top: 68%; left: 60%; }
+.mapa-bairro--centro { bottom: 15%; left: 30%; }
+
+/* Marcadores Georreferenciados */
+.mapa-marcador {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid var(--cor-fundo-cartao);
+  box-shadow: var(--sombra-md);
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+  transition: transform 0.15s ease;
+}
+
+.mapa-marcador:hover {
+  transform: translate(-50%, -50%) scale(1.4);
+  z-index: 10;
+}
+
+.mapa-marcador--aberta {
+  background-color: var(--cor-vermelho-alerta);
+}
+
+.mapa-marcador--manutencao {
+  background-color: var(--cor-alerta-manutencao);
+}
+
+.mapa-marcador--concluida {
+  background-color: var(--cor-verde-sucesso);
+}
+
+/* Oceano Atlântico na Direita */
+.mapa-canvas__oceano {
+  width: 22%;
+  height: 100%;
+  background: radial-gradient(circle at 100% 50%, var(--cor-azul-mapa) 0%, var(--cor-azul-litoral) 100%);
+  border-left: 3px solid var(--cor-amarelo-borda);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--cor-azul-noturno);
+  font-size: 0.8125rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  padding: 1rem;
+  text-align: center;
+}
+
+/* Controles de Zoom do Mapa */
+.mapa-controles {
+  position: absolute;
+  right: 1.25rem;
+  top: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--cor-fundo-cartao);
+  border: 1px solid var(--cor-borda-padrao);
+  border-radius: var(--raio-md);
+  box-shadow: var(--sombra-sm);
+  overflow: hidden;
+  z-index: 5;
+}
+
+.mapa-btn-zoom {
+  background: none;
+  border: none;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--cor-texto-principal);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.mapa-btn-zoom:hover {
+  background-color: var(--cor-fundo-cinza);
+}
+
+.mapa-btn-zoom:first-child {
+  border-bottom: 1px solid var(--cor-borda-padrao);
+}
+
+/* Tabela de Ocorrências */
+.tabela-container {
+  overflow-x: auto;
+  border: 1px solid var(--cor-borda-padrao);
+  border-radius: var(--raio-md);
+  margin-top: 0.5rem;
+}
+
+.tabela-ocorrencias {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.875rem;
+}
+
+.tabela-ocorrencias thead {
+  background-color: var(--cor-azul-primario);
+  color: var(--cor-texto-claro);
+}
+
+.tabela-ocorrencias th {
+  padding: 0.875rem 1rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  font-size: 0.8125rem;
+}
+
+.tabela-ocorrencias td {
+  padding: 0.875rem 1rem;
+  border-bottom: 1px solid var(--cor-borda-padrao);
+  color: var(--cor-texto-principal);
+}
+
+.tabela-ocorrencias tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.tabela-ocorrencias tbody tr:hover {
+  background-color: var(--cor-azul-claro);
+}
+
+.tabela-protocolo {
+  font-family: var(--fonte-mono);
+  font-weight: 700;
+  color: var(--cor-azul-escuro);
+}
+
+.tabela-col-acao {
+  text-align: center;
+  width: 60px;
+}
+
+.tabela-acao-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--raio-sm);
+  color: var(--cor-azul-destaque);
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.tabela-acao-link:hover {
+  background-color: var(--cor-azul-claro);
+  color: var(--cor-azul-escuro);
+}
+
+/* Paginação da Tabela */
+.tabela-paginacao {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--cor-borda-padrao);
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.tabela-paginacao__info {
+  font-size: 0.8125rem;
+  color: var(--cor-texto-mutado);
+}
+
+.tabela-paginacao__controles {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.paginacao-btn {
+  background: var(--cor-fundo-cartao);
+  border: 1px solid var(--cor-borda-padrao);
+  border-radius: var(--raio-sm);
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--cor-texto-secundario);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.paginacao-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.paginacao-btn:not(:disabled):hover {
+  background-color: var(--cor-fundo-cinza);
+}
+
+.paginacao-numero {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--raio-sm);
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.paginacao-numero--ativo {
+  background-color: var(--cor-azul-primario);
+  color: var(--cor-texto-claro);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .filtros-total {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .mapa-canvas {
+    height: 300px;
+  }
+
+  .mapa-canvas__lagoa,
+  .mapa-canvas__oceano {
+    font-size: 0.6875rem;
+    padding: 0.5rem;
+  }
+}

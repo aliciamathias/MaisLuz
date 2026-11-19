@@ -3,41 +3,37 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block title %}Blog{% endblock %}</title>
-  <link rel="stylesheet" href="{% static 'css/site.css' %}">
+  <meta name="description" content="MaisLuz Maceió - Sistema municipal de gestão de iluminação pública.">
+  <title>{% block title %}MaisLuz Maceió • Iluminação Pública{% endblock %}</title>
+
+  {# O arquivo root.css DEVE ser o primeiro a ser carregado (padroes-frontend) #}
+  <link rel="stylesheet" href="{% static 'css/root.css' %}">
+  {# Estilos compartilhados dos blocos parciais e layout #}
+  <link rel="stylesheet" href="{% static 'css/partials.css' %}">
+
+  {# Folhas de estilo específicas de cada página (mapeamento 1:1) #}
+  {% block extra_css %}{% endblock %}
 </head>
 <body>
-  <header class="topo">
-    <div class="topo-interno">
-      <a class="marca" href="{% url 'posts:lista' %}">Blog</a>
-      <nav class="menu" aria-label="Principal">
-        {% if user.is_authenticated %}
-          <a href="{% url 'posts:painel' %}">Painel</a>
-          <form method="post" action="{% url 'contas:sair' %}">
-            {% csrf_token %}
-            <button type="submit" class="botao-link">Sair</button>
-          </form>
-        {% else %}
-          <a href="{% url 'contas:entrar' %}">Entrar</a>
-        {% endif %}
-      </nav>
-    </div>
-  </header>
+  {# Acessibilidade WCAG 2.1 AA: Skip link no topo do body #}
+  {% include 'partials/_skip_link.html' %}
 
-  <main class="conteudo">
-    {% if messages %}
-      <ul class="mensagens">
-        {% for message in messages %}
-          <li class="mensagem {{ message.tags }}" role="status">{{ message }}</li>
-        {% endfor %}
-      </ul>
-    {% endif %}
+  {% block layout %}
+    <main id="conteudo-principal" class="publico-conteudo" tabindex="-1">
+      {% if messages %}
+        <div class="mensagens-container" role="region" aria-label="Mensagens do sistema">
+          {% for message in messages %}
+            <div class="mensagem mensagem--{{ message.tags }}" role="alert">
+              {{ message }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
 
-    {% block content %}{% endblock %}
-  </main>
+      {% block content %}{% endblock %}
+    </main>
+  {% endblock layout %}
 
-  <footer class="rodape">
-    <p>Blog · {% now "Y" %}</p>
-  </footer>
+  {% block extra_js %}{% endblock %}
 </body>
 </html>

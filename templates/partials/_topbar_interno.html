@@ -1,0 +1,38 @@
+{% load static %}
+<header class="painel-topbar" role="banner">
+  <nav aria-label="Migalhas de navegação">
+    <ol class="painel-migalhas">
+      <li><a href="#" class="publico-rodape__link">Administração</a></li>
+      <li aria-hidden="true">/</li>
+      <li class="painel-migalhas__item--atual" aria-current="page">
+        {% block breadcrumb %}Gestão de ocorrências{% endblock %}
+      </li>
+    </ol>
+  </nav>
+
+  <div class="painel-topbar__acoes">
+    <button type="button" class="painel-topbar__botao-icone" aria-label="Notificações do sistema (nenhuma nova notificação)">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+      </svg>
+    </button>
+
+    <div class="painel-topbar__usuario" aria-label="Identificação do operador logado">
+      <span class="painel-topbar__avatar" aria-hidden="true">OP</span>
+      <div class="painel-topbar__info">
+        <span class="painel-topbar__nome">Operador de exemplo</span>
+        <span class="painel-topbar__papel">
+          {% if is_admin or user.is_superuser or user.is_staff or perfil == 'administrador' %}
+            Administrador
+          {% else %}
+            Atendente
+          {% endif %}
+        </span>
+      </div>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
+    </div>
+  </div>
+</header>

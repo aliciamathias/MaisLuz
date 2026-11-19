@@ -7,4 +7,4 @@ from django.views import View
 class SairView(LoginRequiredMixin, View):
     def post(self, request):
         logout(request)
-        return redirect("posts:lista")
+        return redirect("registrar_ocorrencia")
