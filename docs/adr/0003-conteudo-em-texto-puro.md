@@ -1,18 +1,18 @@
-# ADR 0003: Conteúdo dos posts em texto puro
+# ADR 0003: Descrição das ocorrências em texto puro
 
 - **Status:** Aceito
 - **Data:** 2026-11-04
 
 ## Contexto
 
-O conteúdo de um post pode ser guardado como texto puro, Markdown ou HTML. Markdown e HTML permitem mais formatação, mas exigem dependências adicionais e sanitização para evitar XSS.
+A descrição de uma ocorrência reportada pelo cidadão pode ser guardada como texto puro, Markdown ou HTML. Markdown e HTML permitem mais formatação, mas exigem dependências adicionais e sanitização para evitar XSS.
 
 ## Decisão
 
-O conteúdo é guardado como texto puro e exibido com o autoescape do Django e o filtro `linebreaks`, que transforma quebras de linha em parágrafos. O filtro `safe` e a função `mark_safe` não são usados em conteúdo enviado por usuários.
+O texto é guardado como texto puro (com limite de até 300 caracteres) e exibido com o autoescape padrão do Django. O filtro `safe` e a função `mark_safe` não são usados em nenhum conteúdo enviado por usuários.
 
 ## Consequências
 
-- Não há novas dependências, e o risco de XSS pelo conteúdo fica coberto pelo autoescape.
-- Os posts não têm títulos internos, links clicáveis, imagens nem outras formatações.
-- Adotar Markdown no futuro exigirá uma nova ADR, com renderização e sanitização, mas não exigirá migrar os textos já gravados.
+- Não há novas dependências, e o risco de XSS pelo conteúdo fica coberto pelo autoescape nativo do Django.
+- A descrição é direta e concisa, sem formatações complexas ou tags maliciosas.
+- A integridade dos dados registrados pelo cidadão é preservada.

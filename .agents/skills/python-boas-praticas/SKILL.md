@@ -10,7 +10,7 @@ O projeto usa Python 3.12. Quando houver conflito, `docs/arquitetura.md` prevale
 ## Estilo e nomes
 
 - Siga a PEP 8: 4 espaços, `snake_case` para funções e variáveis, `PascalCase` para classes e `UPPER_CASE` para constantes.
-- Use termos do domínio em português e sufixos técnicos em inglês: `PostService.listar_publicados`, `ComentarioForm`, `PostListView`.
+- Use termos do domínio em português e sufixos técnicos em inglês: `OcorrenciaService.listar_para_cidadao`, `RegistroOcorrenciaForm`, `MinhasOcorrenciasView`.
 - Prefira nomes que dispensem comentários. Comente o motivo de uma decisão, não o que o código faz.
 - Agrupe os imports em biblioteca padrão, terceiros e projeto. Não use `import *`.
 - Use f-strings para formatar texto e `pathlib.Path` para caminhos.

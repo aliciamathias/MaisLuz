@@ -55,21 +55,28 @@ flowchart LR
 Leitura:
 
 ```python
-class PostListView(View):
+class MinhasOcorrenciasView(LoginRequiredMixin, View):
     def get(self, request):
-        posts = PostService.listar_publicados()
-        return render(request, "posts/lista.html", {"posts": posts})
+        ocorrencias = OcorrenciaService.listar_para_cidadao(request.user)
+        return render(
+            request,
+            "ocorrencias/minhas-ocorrencias-cidadao.html",
+            {"ocorrencias": ocorrencias},
+        )
 ```
 
 Alteração, com a exceção de domínio convertida em resposta HTTP:
 
 ```python
-class PostPublicarView(LoginRequiredMixin, View):
-    def post(self, request, post_id):
+class CancelarOcorrenciaView(LoginRequiredMixin, View):
+    def post(self, request, protocolo):
         try:
-            PostService.publicar(post_id, request.user)
-        except PostNaoEncontrado as exc:
+            OcorrenciaService.excluir_logica_cidadao(protocolo, request.user)
+        except OcorrenciaNaoEncontradaErro as exc:
             raise Http404 from exc
-        messages.success(request, "Post publicado.")
-        return redirect("posts:painel")
+        except OcorrenciaEmAndamentoErro as exc:
+            messages.error(request, str(exc))
+            return redirect("minhas_ocorrencias")
+        messages.success(request, "Ocorrência cancelada com sucesso.")
+        return redirect("minhas_ocorrencias")
 ```

@@ -1,8 +1,8 @@
 # Spec 0001: Fundação do projeto
 
 - **Status:** Implementado
-- **Requisitos:** RNF-01, RNF-03 e RNF-04 do [PRD 0001](../prd/0001-blog.md)
-- **Decisões:** [ADR 0001](../adr/0001-mvt-com-camada-de-service.md), [ADR 0002](../adr/0002-modelo-de-usuario-customizado.md)
+- **Requisitos:** RNF01, RNF03, RNF04 e RS001 do [PRD 0001](../prd/0001-maisluz.md)
+- **Decisões:** [ADR 0001](../adr/0001-mvt-com-camada-de-service.md), [ADR 0002](../adr/0002-modelo-de-usuario-customizado.md), [ADR 0004](../adr/0004-postgresql-como-banco-de-dados.md)
 
 Esta especificação deve ser implementada primeiro, e o modelo de usuário precisa existir antes do primeiro `migrate`.
 
@@ -10,9 +10,11 @@ Esta especificação deve ser implementada primeiro, e o modelo de usuário prec
 
 | Configuração | Valor |
 |---|---|
-| `INSTALLED_APPS` | Adicionar `"contas"` e `"posts"` |
-| `SECRET_KEY` | Variável de ambiente `DJANGO_SECRET_KEY`. Sem ela, usa uma chave temporária com `DEBUG = True`. Com `DEBUG = False`, o Django levanta erro ao precisar da chave |
+| `INSTALLED_APPS` | Adicionar `"contas"` e `"ocorrencias"` |
+| `DATABASES` | Configurado para PostgreSQL via variáveis de ambiente (`DB_NAME`, `DB_USER`, `DB_PASSWORD`, `DB_HOST`, `DB_PORT`) |
+| `SECRET_KEY` | Variável de ambiente `DJANGO_SECRET_KEY`. Sem ela, usa chave temporária com `DEBUG = True` |
 | `AUTH_USER_MODEL` | `"contas.Usuario"` |
+| `AUTHENTICATION_BACKENDS` | `["contas.backends.CPFEmailBackend", "django.contrib.auth.backends.ModelBackend"]` |
 | `LOGIN_URL` | `"contas:entrar"` |
 | `LANGUAGE_CODE` | `"pt-br"` |
 | `TIME_ZONE` | `"America/Maceio"` |
@@ -23,59 +25,79 @@ Esta especificação deve ser implementada primeiro, e o modelo de usuário prec
 
 ```text
 core/
-  urls.py               # inclui posts.urls e contas.urls
+  settings.py
+  urls.py
+  views.py
 contas/
-  models/usuario.py
+  models/
+    usuario.py
+    auditoria.py
+    solicitacao_senha.py
   forms/
+    login.py
+    cidadao.py
+  services/
+    cidadao.py
+    funcionario.py
+    auditoria.py
   views/
+    entrar.py
+    sair.py
+  backends.py
+  exceptions.py
   templates/contas/
   tests/
   urls.py
-posts/
-  models/
+ocorrencias/
+  models.py
   forms/
+    ocorrencia.py
   services/
-  views/
-  templates/posts/
-  tests/
+    ocorrencia.py
   exceptions.py
-  urls.py
-templates/base.html
-static/css/site.css
+  templates/ocorrencias/
+  tests/
+templates/
+  base_publico.html
+  base_interno.html
+  paginas/
+  cidadao/
+  ocorrencias/
+  funcionarios/
+static/
+  css/
+  js/
+    viacep.js
 ```
 
-Cada pacote `models/`, `views/`, `services/` e `forms/` reexporta suas classes públicas no `__init__.py`. O arquivo `posts/tests.py` deve ser removido ao criar o pacote `posts/tests/`, pois os dois têm o mesmo nome de módulo.
+Cada pacote `models/`, `views/`, `services/` e `forms/` reexporta suas classes públicas no `__init__.py`.
 
-## Layout base (`templates/base.html`)
+## Layouts base (`templates/base_publico.html` e `templates/base_interno.html`)
 
-Todas as páginas herdam deste template, que contém:
+Todas as páginas herdam destes templates acessíveis (WCAG 2.1 AA), contendo:
 
 - `<html lang="pt-br">` e a meta tag `viewport`
-- Cabeçalho com link para a página inicial
-- Para visitantes: link "Entrar"
-- Para autores: link "Painel" e botão "Sair", em um formulário POST com `{% csrf_token %}`
+- Cabeçalhos modulares com navegação acessível e indicador de skip link
 - Área de mensagens do framework `django.contrib.messages`
-- Blocos `title` e `content`
+- Blocos `title`, `extra_css`, `content` e `extra_js`
 
 ## URLs do projeto (`core/urls.py`)
 
 ```python
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("", LandingPageView.as_view(), name="inicio"),
+    path("ocorrencias/registrar/", RegistrarOcorrenciaView.as_view(), name="registrar_ocorrencia"),
+    path("ocorrencias/painel/", PainelOcorrenciasView.as_view(), name="ocorrencias_painel"),
+    path("ocorrencias/minhas/", MinhasOcorrenciasView.as_view(), name="minhas_ocorrencias"),
+    path("cidadao/cadastro/", CadastroCidadaoView.as_view(), name="cadastro_cidadao"),
+    path("cidadao/perfil/", MeuPerfilCidadaoView.as_view(), name="meu_perfil_cidadao"),
     path("", include("contas.urls")),
-    path("", include("posts.urls")),
 ]
 ```
-
-## Teste de arquitetura
-
-`posts/tests/test_arquitetura.py` percorre os módulos de `contas.views` e `posts.views` e falha se:
-
-1. uma classe definida no módulo com nome terminado em `View` não tiver `django.views.View` em `__bases__`;
-2. uma função pública for usada como view em `urls.py`, ou seja, algum padrão de URL não apontar para uma view criada com `as_view()` (com exceção das rotas do Admin).
 
 ## Critérios de aceite
 
 - [x] `python manage.py check` não reporta problemas.
-- [x] `python manage.py migrate` executa em um banco novo usando `contas.Usuario`.
-- [x] O teste de arquitetura passa.
+- [x] `python manage.py migrate` executa no banco PostgreSQL `maisluz` usando `contas.Usuario`.
+- [x] Suíte de testes automatizados passa com 100% de sucesso.

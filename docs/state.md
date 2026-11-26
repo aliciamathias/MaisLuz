@@ -1,6 +1,6 @@
 # Estado atual
 
-Atualizado em: 2026-11-25
+Atualizado em: 2026-11-26
 
 Este arquivo guarda apenas o que não está em outro lugar. Mantenha-o com cerca de 30 linhas e retire o que estiver resolvido. O status de cada documento fica no próprio documento, e o histórico fica no Git.
 
@@ -10,13 +10,11 @@ Nada.
 
 ## Concluído recentemente
 
-- Integração nativa da API ViaCEP em JavaScript puro (`static/js/viacep.js`) com `fetch`, sem bibliotecas externas:
-  - Disparo automático ao atingir 8 dígitos válidos, no evento `blur` ou no clique do botão `Buscar CEP`.
-  - Preenchimento dinâmico de Logradouro e Bairro no Cadastro do Cidadão (RF001), Edição de Perfil (RF008) e Registro de Ocorrência.
-  - Validação de abrangência geográfica para Maceió/AL (RNF02), exibindo aviso e bloqueando autopreenchimento de outros municípios.
-  - Tolerância a falhas e resiliência com timeout (7s via `AbortController`), tratamento de erro de rede ou CEP não encontrado, liberando os campos para digitação manual (RNF07).
-  - Feedback visual e acessível com `aria-live="polite"` e estilos no padrão WCAG AA.
-- Implementação e proteção das rotas do Cidadão (`registrar_ocorrencia`, `minhas_ocorrencias`, `meu_perfil_cidadao`) com `LoginRequiredMixin`.
+- Atualização completa de `docs/arquitetura.md` e `docs/specs/` removendo todos os resquícios do antigo sistema de posts e adaptando para o sistema MaisLuz:
+  - Exemplos de leitura e alteração atualizados em `docs/arquitetura.md` e `docs/specs/0003-ocorrencias.md` utilizando `OcorrenciaService`, `MinhasOcorrenciasView` e `CancelarOcorrenciaView`.
+  - Specs reescritas alinhadas ao PRD do MaisLuz: `0001-fundacao.md`, `0002-autenticacao.md`, `0003-ocorrencias.md`, `0004-auditoria.md` e `0005-gestao-funcionarios.md`.
+  - Remoção dos arquivos obsoletos do blog (`0003-posts.md`, `0004-comentarios.md`, `0005-publicacoes-iniciais.md`).
+  - Atualização de `docs/adr/0003-conteudo-em-texto-puro.md` e skill de Python para o domínio do MaisLuz.
 - Suíte completa de 65 testes automatizados executando com 100% de aprovação (OK).
 
 ## Próximos passos
