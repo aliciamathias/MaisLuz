@@ -1,0 +1,163 @@
+{% extends 'base_publico.html' %}
+{% load static %}
+
+{% block title %}Minhas Ocorrências • MaisLuz Maceió{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/minhas-ocorrencias-cidadao.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="minhas-ocorrencias">
+  <!-- Cabeçalho -->
+  <header class="minhas-ocorrencias__cabecalho">
+    <p class="minhas-ocorrencias__kicker">
+      Iluminação Pública • Maceió — Cidadão / Painel de Acompanhamento
+    </p>
+    <h1 class="minhas-ocorrencias__titulo">Suas solicitações em um só lugar</h1>
+    <p class="minhas-ocorrencias__descricao">
+      Acompanhe o andamento dos chamados de iluminação pública registrados no seu CPF ou pesquise por número de protocolo.
+    </p>
+  </header>
+
+  <!-- Mensagens do Django Messages -->
+  {% if messages %}
+    <div class="mensagens-alertas" role="region" aria-label="Mensagens do sistema">
+      {% for message in messages %}
+        <div class="alerta alerta--{{ message.tags }}" role="alert">
+          {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <!-- Abas de Status -->
+  <nav class="minhas-ocorrencias__abas" aria-label="Filtrar por status">
+    <ul class="minhas-ocorrencias__abas-lista" role="tablist">
+      <li role="presentation">
+        <button type="button" class="minhas-ocorrencias__aba minhas-ocorrencias__aba--ativa" role="tab" aria-selected="true" aria-controls="tab-todas" id="tab-btn-todas">
+          Todas ({{ total_ocorrencias|default:0 }})
+        </button>
+      </li>
+      <li role="presentation">
+        <button type="button" class="minhas-ocorrencias__aba" role="tab" aria-selected="false" aria-controls="tab-andamento" id="tab-btn-andamento">
+          Em Andamento ({{ total_andamento|default:0 }})
+        </button>
+      </li>
+      <li role="presentation">
+        <button type="button" class="minhas-ocorrencias__aba" role="tab" aria-selected="false" aria-controls="tab-concluidas" id="tab-btn-concluidas">
+          Concluídas ({{ total_concluidas|default:0 }})
+        </button>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Lista de Ocorrências -->
+  <div id="tab-todas" role="tabpanel" aria-labelledby="tab-btn-todas">
+    {% if ocorrencias %}
+      <ul class="ocorrencia-lista" aria-label="Lista de ocorrências">
+        {% for oco in ocorrencias %}
+          <li class="ocorrencia-card {% if oco.status == 'concluido' %}ocorrencia-card--concluida{% endif %}" data-status="{{ oco.status }}">
+            <div class="ocorrencia-card__topo">
+              <div class="ocorrencia-card__protocolo">
+                <span class="ocorrencia-card__numero">#{{ oco.protocolo }}</span>
+                <span class="ocorrencia-card__data">{{ oco.criado_em|date:"d/m/Y \à\s H:i" }}</span>
+              </div>
+              <span class="badge {% if oco.status == 'concluido' %}badge--concluida{% elif oco.status == 'cancelado' %}badge--cancelada{% else %}badge--aberta{% endif %}">
+                {{ oco.get_status_display }}
+              </span>
+            </div>
+            <div class="ocorrencia-card__corpo">
+              <div class="ocorrencia-card__icone" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="5"></circle>
+                  <line x1="12" y1="1" x2="12" y2="3"></line>
+                  <line x1="12" y1="21" x2="12" y2="23"></line>
+                  <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                  <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                  <line x1="1" y1="12" x2="3" y2="12"></line>
+                  <line x1="21" y1="12" x2="23" y2="12"></line>
+                  <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                  <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+              </div>
+              <div class="ocorrencia-card__info">
+                <strong class="ocorrencia-card__tipo">{{ oco.get_tipo_defeito_display }}</strong>
+                <p class="ocorrencia-card__endereco">{{ oco.rua }}, {{ oco.bairro }} • {{ oco.ponto_referencia }}</p>
+                <p class="ocorrencia-card__poste">Poste #{{ oco.numero_poste }}</p>
+              </div>
+            </div>
+            <div class="ocorrencia-card__rodape" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+              <span class="ocorrencia-card__prazo">
+                {% if oco.status == 'concluido' %}
+                  Concluída em {{ oco.atualizado_em|date:"d/m/Y \à\s H:i" }}
+                {% elif oco.status == 'cancelado' %}
+                  Cancelada
+                {% else %}
+                  Prazo estimado de resolução: até 15 dias
+                {% endif %}
+              </span>
+              {% if oco.status == 'pendente' %}
+                <form method="post" action="{% url 'minhas_ocorrencias' %}" style="display: inline;" onsubmit="return confirm('Deseja realmente cancelar esta solicitação?');">
+                  {% csrf_token %}
+                  <input type="hidden" name="protocolo" value="{{ oco.protocolo }}">
+                  <button type="submit" class="btn btn--outline" style="color: #991B1B; border-color: #FECACA; font-size: 0.8125rem; padding: 0.25rem 0.75rem;">
+                    Cancelar Solicitação
+                  </button>
+                </form>
+              {% endif %}
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <div class="cartao" style="text-align: center; padding: 3rem 1.5rem; margin-top: 1.5rem;">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--cor-texto-secundario); margin-bottom: 1rem;" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+        <p style="font-size: 1.125rem; font-weight: 600; color: var(--cor-texto-principal); margin-bottom: 0.5rem;">
+          Nenhuma ocorrência registrada no momento
+        </p>
+        <p style="font-size: 0.875rem; color: var(--cor-texto-secundario); margin-bottom: 1.5rem;">
+          Quando você registrar uma solicitação de iluminação pública, ela aparecerá aqui para acompanhamento.
+        </p>
+        <a href="{% url 'registrar_ocorrencia' %}" class="btn btn--primario-amarelo">
+          Registrar problema
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var abas = document.querySelectorAll('.minhas-ocorrencias__aba');
+    var cards = document.querySelectorAll('.ocorrencia-card');
+
+    abas.forEach(function(aba) {
+      aba.addEventListener('click', function() {
+        abas.forEach(function(a) {
+          a.classList.remove('minhas-ocorrencias__aba--ativa');
+          a.setAttribute('aria-selected', 'false');
+        });
+        this.classList.add('minhas-ocorrencias__aba--ativa');
+        this.setAttribute('aria-selected', 'true');
+
+        var id = this.id;
+        cards.forEach(function(card) {
+          var status = card.getAttribute('data-status');
+          if (id === 'tab-btn-todas') {
+            card.style.display = 'block';
+          } else if (id === 'tab-btn-andamento') {
+            card.style.display = (status === 'pendente' || status === 'em_progresso') ? 'block' : 'none';
+          } else if (id === 'tab-btn-concluidas') {
+            card.style.display = (status === 'concluido') ? 'block' : 'none';
+          }
+        });
+      });
+    });
+  });
+</script>
+{% endblock %}

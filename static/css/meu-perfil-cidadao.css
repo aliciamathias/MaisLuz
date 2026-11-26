@@ -1,0 +1,192 @@
+/* ==========================================================================
+   meu-perfil-cidadao.css - Perfil do cidadão (área pública)
+   Consome exclusivamente variáveis definidas em root.css.
+   ========================================================================== */
+
+.perfil-cidadao {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Cabeçalho */
+.perfil-cidadao__cabecalho {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--cor-azul-escuro);
+}
+
+.perfil-cidadao__titulo {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--cor-texto-escuro);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.perfil-cidadao__descricao {
+  font-size: 0.875rem;
+  color: var(--cor-texto-secundario);
+  margin: 0.25rem 0 0 0;
+}
+
+/* Card Principal */
+.perfil-cidadao__card {
+  padding: 1.75rem;
+}
+
+.perfil-cidadao__card-cabecalho {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.75rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--cor-borda-padrao);
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.perfil-cidadao__card-titulo {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--cor-texto-principal);
+  margin: 0;
+}
+
+.perfil-cidadao__btn-editar {
+  font-size: 0.8125rem;
+  padding: 0.5rem 1rem;
+  min-height: 38px;
+}
+
+/* Seções do Card */
+.perfil-cidadao__secao {
+  margin-bottom: 1.75rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--cor-borda-padrao);
+}
+
+.perfil-cidadao__secao:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.perfil-cidadao__secao-titulo {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--cor-texto-principal);
+  margin: 0 0 1.25rem 0;
+}
+
+.perfil-cidadao__secao-numero {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background-color: var(--cor-azul-escuro);
+  color: var(--cor-texto-claro);
+  border-radius: 50%;
+  font-size: 0.75rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* Grid de Dados */
+.perfil-cidadao__dados {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.perfil-cidadao__dados:last-child {
+  margin-bottom: 0;
+}
+
+.perfil-cidadao__dados--3col {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.perfil-cidadao__campo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.perfil-cidadao__campo--full {
+  grid-column: 1 / -1;
+}
+
+.perfil-cidadao__campo-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--cor-texto-mutado);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.perfil-cidadao__campo-valor {
+  font-size: 0.9375rem;
+  color: var(--cor-texto-principal);
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--cor-borda-padrao);
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+}
+
+.perfil-cidadao__campo-valor--protegido {
+  color: var(--cor-texto-mutado);
+  font-family: var(--fonte-mono);
+  letter-spacing: 0.05em;
+}
+
+/* Senha com link */
+.perfil-cidadao__campo-senha {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.perfil-cidadao__campo-senha .perfil-cidadao__campo-valor {
+  flex: 1;
+}
+
+.perfil-cidadao__link-senha {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--cor-azul-destaque);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.15s ease;
+}
+
+.perfil-cidadao__link-senha:hover {
+  color: var(--cor-azul-escuro);
+  text-decoration: underline;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .perfil-cidadao__dados--3col {
+    grid-template-columns: 1fr;
+  }
+
+  .perfil-cidadao__card-cabecalho {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .perfil-cidadao__campo-senha {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

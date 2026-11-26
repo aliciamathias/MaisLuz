@@ -1,0 +1,74 @@
+{% extends 'base_publico.html' %}
+{% load static %}
+
+{% block title %}Cadastro Realizado • MaisLuz Maceió{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/cadastro-cidadao.css' %}">
+  <style>
+    .confirmacao-container {
+      min-height: 60vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 3rem 1.5rem;
+    }
+    .confirmacao-card {
+      background: #FFFFFF;
+      border: 1px solid #DCE4EE;
+      border-radius: 16px;
+      padding: 3rem 2.5rem;
+      max-width: 520px;
+      width: 100%;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    .confirmacao-icone {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background-color: #ECFDF5;
+      color: #10B981;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .confirmacao-titulo {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #122859;
+      margin: 0;
+    }
+    .confirmacao-texto {
+      color: #64748B;
+      font-size: 1rem;
+      line-height: 1.5;
+      margin: 0;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+<div class="confirmacao-container">
+  <div class="confirmacao-card" role="region" aria-labelledby="titulo-sucesso">
+    <div class="confirmacao-icone" aria-hidden="true">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+      </svg>
+    </div>
+    <h1 id="titulo-sucesso" class="confirmacao-titulo">Cadastro realizado com sucesso</h1>
+    <p class="confirmacao-texto">
+      Sua conta no MaisLuz Maceió foi criada. Agora você pode entrar para registrar e acompanhar ocorrências de iluminação pública na sua rua.
+    </p>
+    <a href="{% url 'contas:entrar' %}" class="btn btn--primario-amarelo" style="width: 100%;">
+      Acessar minha conta
+    </a>
+  </div>
+</div>
+{% endblock %}

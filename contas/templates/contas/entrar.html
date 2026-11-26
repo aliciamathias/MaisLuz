@@ -1,27 +1,189 @@
-{% extends "base_publico.html" %}
+{% extends 'base_publico.html' %}
+{% load static %}
 
-{% block title %}Entrar • MaisLuz Maceió{% endblock %}
+{% block title %}Acessar sua Conta • MaisLuz Maceió{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/entrar.css' %}">
+{% endblock %}
 
 {% block content %}
-<div style="max-width: 440px; margin: 2rem auto;">
-  <section class="cartao">
-    <div class="cartao-cabecalho">
-      <div>
-        <h1 class="cartao-titulo">Entrar no MaisLuz</h1>
-        <p class="cartao-subtitulo">Informe suas credenciais para acessar o sistema.</p>
-      </div>
+<div class="login-container">
+  <!-- Cabeçalho -->
+  <header class="login-cabecalho">
+    <p class="login-cabecalho__kicker">Portal do Cidadão / Acesso ao Sistema</p>
+    <h1 class="login-cabecalho__titulo">Uma cidade mais iluminada começa com você.</h1>
+    <p class="login-cabecalho__subtitulo">
+      Entre na sua conta para registrar novos problemas de iluminação e acompanhar o andamento dos seus chamados.
+    </p>
+  </header>
+
+  <!-- Cartão de Login -->
+  <section class="login-cartao" aria-labelledby="titulo-acessar-conta">
+    <div class="login-cartao__topo">
+      <h2 id="titulo-acessar-conta" class="login-cartao__titulo">Acessar sua conta</h2>
+      <span class="login-cartao__obrigatorio">* Campos obrigatórios</span>
     </div>
 
-    <form method="post" action="{% url 'contas:entrar' %}" class="cadastro-form" style="margin-top: 1rem;">
+    <p class="login-secao-titulo">Suas credenciais de acesso</p>
+
+    {% if messages %}
+      <div class="mensagens-alertas" role="status">
+        {% for message in messages %}
+          <div class="alerta alerta--{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <form method="post" action="{% url 'contas:entrar' %}" class="login-form" novalidate id="form-login">
       {% csrf_token %}
-      {{ form.as_p }}
-      {% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}
-      <div style="margin-top: 1.5rem;">
-        <button type="submit" class="btn btn--primario-amarelo" style="width: 100%;">
+      {% if next %}
+        <input type="hidden" name="next" value="{{ next }}">
+      {% endif %}
+
+      {% if form.non_field_errors %}
+        <div class="login-erros" role="alert" aria-live="assertive">
+          <ul>
+            {% for error in form.non_field_errors %}
+              <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+
+      <!-- Campo CPF ou E-mail -->
+      <div class="campo-grupo">
+        <label for="id_username" class="campo-label">CPF ou E-mail *</label>
+        <div class="campo-input-icone">
+          <input
+            type="text"
+            id="id_username"
+            name="username"
+            class="campo-input {% if form.username.errors %}campo-input--erro{% endif %}"
+            placeholder="Digite seu CPF ou E-mail cadastrado"
+            value="{{ form.username.value|default:'' }}"
+            required
+            autocomplete="username"
+          >
+          <span class="campo-icone-embutido" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+              <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+          </span>
+        </div>
+        <span class="campo-dica">Digite o CPF ou E-mail cadastrado na sua conta.</span>
+        {% if form.username.errors %}
+          <span class="campo-erro" role="alert">{{ form.username.errors.0 }}</span>
+        {% endif %}
+      </div>
+
+      <!-- Campo Senha -->
+      <div class="campo-grupo">
+        <label for="id_password" class="campo-label">Senha *</label>
+        <div class="campo-input-icone">
+          <input
+            type="password"
+            id="id_password"
+            name="password"
+            class="campo-input {% if form.password.errors %}campo-input--erro{% endif %}"
+            placeholder="Digite sua senha de acesso."
+            required
+            autocomplete="current-password"
+          >
+          <button type="button" class="btn-mostrar-senha" aria-label="Mostrar ou ocultar senha">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+              <circle cx="12" cy="10" r="3"></circle>
+            </svg>
+          </button>
+        </div>
+        {% if form.password.errors %}
+          <span class="campo-erro" role="alert">{{ form.password.errors.0 }}</span>
+        {% endif %}
+      </div>
+
+      <!-- Link Esqueceu a Senha -->
+      <div class="login-esqueceu">
+        Esqueceu sua senha? <a href="{% url 'recuperar_senha_cidadao' %}">Recuperar acesso</a>
+      </div>
+
+      <!-- Botões de Ação -->
+      <div class="login-acoes">
+        <button type="button" class="btn btn--outline" id="btn-cancelar-login">
+          Cancelar
+        </button>
+        <button type="submit" class="btn btn--primario-amarelo">
           Entrar
         </button>
       </div>
     </form>
   </section>
+
+  <!-- Modal de Cancelamento de Login -->
+  <dialog id="modal-cancelar-login" class="modal-confirmacao">
+    <div class="modal-confirmacao__conteudo" role="alertdialog" aria-labelledby="modal-login-titulo" aria-describedby="modal-login-desc">
+      <h3 id="modal-login-titulo" class="modal-confirmacao__titulo">Cancelar login?</h3>
+      <p id="modal-login-desc" class="modal-confirmacao__texto">Deseja mesmo cancelar o login? Tudo o que foi feito será apagado.</p>
+      <div class="modal-confirmacao__acoes">
+        <button type="button" class="btn btn--outline" id="btn-modal-login-nao">Não</button>
+        <a href="{% url 'inicio' %}" class="btn btn--destrutivo" id="btn-modal-login-sim">Sim</a>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Suporte 156 -->
+  <p class="link-suporte-156">
+    Precisa de ajuda para acessar? Ligue <strong>156</strong>.
+  </p>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var btnSenha = document.querySelector('.btn-mostrar-senha');
+    if (btnSenha) {
+      btnSenha.addEventListener('click', function() {
+        var input = document.getElementById('id_password');
+        if (input) {
+          if (input.type === 'password') {
+            input.type = 'text';
+            this.setAttribute('aria-label', 'Ocultar senha');
+          } else {
+            input.type = 'password';
+            this.setAttribute('aria-label', 'Mostrar senha');
+          }
+        }
+      });
+    }
+
+    var btnCancelar = document.getElementById('btn-cancelar-login');
+    var modalCancelar = document.getElementById('modal-cancelar-login');
+    var btnModalNao = document.getElementById('btn-modal-login-nao');
+
+    if (btnCancelar && modalCancelar) {
+      btnCancelar.addEventListener('click', function() {
+        if (typeof modalCancelar.showModal === 'function') {
+          modalCancelar.showModal();
+        } else {
+          modalCancelar.setAttribute('open', '');
+        }
+      });
+    }
+
+    if (btnModalNao && modalCancelar) {
+      btnModalNao.addEventListener('click', function() {
+        if (typeof modalCancelar.close === 'function') {
+          modalCancelar.close();
+        } else {
+          modalCancelar.removeAttribute('open');
+        }
+      });
+    }
+  });
+</script>
 {% endblock %}

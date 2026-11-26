@@ -2,6 +2,8 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 
+from contas.models import TipoPerfil
+
 SENHA = "senha-de-teste-123"
 
 
@@ -9,7 +11,18 @@ class EntrarViewTests(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.url = reverse("contas:entrar")
-        cls.autor = get_user_model().objects.create_user("autora", password=SENHA)
+        cls.autor = get_user_model().objects.create_user(
+            "autora",
+            password=SENHA,
+            is_staff=True,
+            tipo_perfil=TipoPerfil.FUNCIONARIO,
+        )
+        cls.cidadao = get_user_model().objects.create_user(
+            "cidadao",
+            password=SENHA,
+            is_staff=False,
+            tipo_perfil=TipoPerfil.CIDADAO,
+        )
 
     def _entrar(self, senha=SENHA, usuario="autora", **extra):
         return self.client.post(self.url, {"username": usuario, "password": senha, **extra})
@@ -20,10 +33,16 @@ class EntrarViewTests(TestCase):
         self.assertEqual(resposta.status_code, 200)
         self.assertContains(resposta, "csrfmiddlewaretoken")
 
-    def test_credenciais_validas_redirecionam_para_o_painel(self):
-        resposta = self._entrar()
+    def test_credenciais_validas_redirecionam_para_o_painel_se_funcionario(self):
+        resposta = self._entrar(usuario="autora")
 
         self.assertRedirects(resposta, reverse("ocorrencias_painel"))
+        self.assertIn("_auth_user_id", self.client.session)
+
+    def test_credenciais_validas_redirecionam_para_minhas_ocorrencias_se_cidadao(self):
+        resposta = self._entrar(usuario="cidadao")
+
+        self.assertRedirects(resposta, reverse("minhas_ocorrencias"))
         self.assertIn("_auth_user_id", self.client.session)
 
     def test_senha_errada_nao_cria_sessao_e_mostra_erro(self):
@@ -43,7 +62,12 @@ class EntrarViewTests(TestCase):
         )
 
     def test_conta_inativa_nao_entra(self):
-        get_user_model().objects.create_user("inativa", password=SENHA, is_active=False)
+        get_user_model().objects.create_user(
+            "inativa",
+            password=SENHA,
+            is_active=False,
+            tipo_perfil=TipoPerfil.FUNCIONARIO,
+        )
 
         resposta = self._entrar(usuario="inativa")
 
@@ -102,7 +126,7 @@ class SairViewTests(TestCase):
 
         resposta = self.client.post(self.url)
 
-        self.assertRedirects(resposta, reverse("registrar_ocorrencia"))
+        self.assertRedirects(resposta, reverse("inicio"))
         self.assertNotIn("_auth_user_id", self.client.session)
 
     def test_get_retorna_405_e_mantem_a_sessao(self):
@@ -121,7 +145,7 @@ class SairViewTests(TestCase):
 
 class LayoutBaseTests(TestCase):
     def test_html_declara_idioma_e_viewport(self):
-        resposta = self.client.get(reverse("registrar_ocorrencia"))
+        resposta = self.client.get(reverse("inicio"))
 
         self.assertContains(resposta, '<html lang="pt-br">')
         self.assertContains(resposta, 'name="viewport"')

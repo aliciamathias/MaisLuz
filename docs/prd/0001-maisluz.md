@@ -1,121 +1,280 @@
 # PRD 0001: MaisLuz
 
-- **Status:** Proposto
-- **Data:** 2026-11-11
-- **Especificações:** a definir
+- **Status:** Aceito
+- **Data:** 2026-11-23
+- **Autores:** Daniel de Jesus e Alicia Mathias
+- **Especificações:** `docs/specs/`
 
-## Objetivo
+## 1. Introdução e Visão Geral
 
-Disponibilizar uma plataforma web com abrangência geográfica estritamente delimitada ao município de Maceió, servindo como canal direto de comunicação entre os cidadãos e a concessionária de energia ou órgão público responsável pela iluminação pública. A ferramenta permite que cidadãos previamente identificados registrem ocorrências de falhas em postes e acompanhem o andamento dos chamados, enquanto colaboradores da concessionária visualizam, filtram e gerenciam os status das ocorrências em um painel centralizado.
+Este documento especifica os requisitos do sistema **MaisLuz**, fornecendo as diretrizes formais para o projeto, implementação, testes e homologação do software.
 
-## Perfis de uso
+O MaisLuz é uma solução desenvolvida em plataforma web com abrangência geográfica estritamente delimitada ao município de Maceió, atuando fundamentalmente como uma ponte de comunicação direta entre o cidadão e a concessionária de energia ou órgão público responsável.
+
+Operacionalmente, a ferramenta viabiliza que os cidadãos — devidamente identificados por meio de cadastro prévio com CPF para coibir denúncias anônimas e trotes — registrem ocorrências detalhadas de problemas na iluminação pública, informando os dados físicos essenciais obtidos diretamente no local (número de identificação do poste, logradouro, bairro e ponto de referência), além da especificação do tipo de defeito constatado (postes apagados, oscilando ou danificados).
+
+Em contrapartida, o sistema centraliza essas informações em um painel dedicado à concessionária ou órgão competente, permitindo a visualização organizada de todos os chamados reportados pela população, otimizando o fluxo de atendimento externo e a prestação de serviços à comunidade.
+
+## 2. Escopo Físico e Limitações
+
+O sistema restringe-se a atuar exclusivamente como canal de atendimento externo para notificação e acompanhamento de falhas na iluminação pública em Maceió. 
+
+### Limitações e Fora do Escopo:
+- Não interfere, engloba ou gerencia processos e trâmites internos de manutenção de campo da concessionária.
+- Não realiza despacho ou roteirização de equipes operacionais.
+- Não gerencia estoque de materiais, peças de reposição ou custos operacionais.
+- Não atende ocorrências fora dos limites territoriais de Maceió.
+- Não aceita registros de ocorrências anônimas ou sem validação prévia de CPF.
+
+## 3. Perfis de Uso
 
 | Perfil | Quem é | O que precisa fazer |
 |---|---|---|
-| Cidadão | Morador de Maceió cadastrado com CPF | Cadastrar-se, autenticar-se, registrar ocorrências de iluminação com dados do poste e acompanhar o status dos seus chamados no painel pessoal |
-| Funcionário | Colaborador da empresa de energia com matrícula funcional | Autenticar-se, consultar, filtrar, visualizar detalhes e atualizar o status das ocorrências no painel corporativo |
-| Administrador | Gestor institucional da empresa de energia | Cadastrar e gerenciar contas de funcionários e auditar históricos de operações e ocorrências |
+| Cidadão | Morador de Maceió cadastrado e identificado com CPF | Cadastrar-se, autenticar-se, registrar ocorrências com localização e número do poste, acompanhar o status dos seus chamados |
+| Funcionário | Colaborador da empresa de energia com matrícula funcional | Autenticar-se, consultar, filtrar, visualizar detalhes completos e atualizar o status das ocorrências |
+| Administrador | Gestor institucional da empresa de energia | Cadastrar e gerenciar colaboradores, auditar históricos de alterações e permissões de acesso |
 
-## Requisitos funcionais
+---
 
-### Cadastro de Cidadãos
+## 4. Requisitos Funcionais
 
-- **RF-01:** O cidadão cadastra-se informando CPF, nome completo (mínimo de 3 caracteres), telefone com DDD, e-mail, senha (de 8 a 30 caracteres), confirmação de senha, CEP (8 dígitos), logradouro, bairro, número e complemento opcional.
-- **RF-02:** O sistema valida o CPF no formato `XXX.XXX.XXX-XX`; se estiver incompleto ou inválido, impede o cadastro com a mensagem "CPF não identificado", e se já estiver em uso, exibe "CPF já cadastrado".
-- **RF-03:** O CPF do cidadão torna-se imutável após a conclusão do cadastro.
-- **RF-04:** O sistema valida a quantidade de caracteres do telefone com DDD e o formato do e-mail com `@`, ponto e domínio válido, impedindo o cadastro caso o e-mail já esteja cadastrado ("E-mail já cadastrado").
-- **RF-05:** O sistema valida a confirmação de uso do e-mail e do telefone enviando um token de 4 dígitos gerado aleatoriamente para cada canal, exigindo a digitação exata em até 5 minutos.
-- **RF-06:** O sistema exige que a senha tenha entre 8 e 30 caracteres (exibindo "A senha é muito curta" ou "A senha é muito longa") e que a confirmação seja idêntica (exibindo "As senhas são diferentes").
-- **RF-07:** O sistema valida o CEP com exatamente 8 dígitos (exibindo "CEP muito curto" ou "CEP muito longo"); se localizado via serviço de busca, autoppreenche logradouro e bairro; caso contrário, permite o preenchimento manual dos campos.
-- **RF-08:** O formulário de cadastro exibe os botões "Cadastrar" (validando campos obrigatórios não preenchidos e incorretos) e "Cancelar" (com diálogo de confirmação para descarte dos dados ou permanência na tela).
-- **RF-09:** Após o cadastro bem-sucedido, o sistema redireciona o cidadão para uma página de confirmação com a mensagem "Cadastro realizado com sucesso" e envia um e-mail de confirmação.
-- **RF-10:** O cidadão atualiza seus próprios dados cadastrais (exceto CPF), mantendo histórico de alterações com responsável, ação realizada, data e hora.
-- **RF-11:** O cidadão solicita a exclusão lógica da sua conta, resultando na anonimização dos seus dados pessoais e na preservação integral das ocorrências por ele registradas.
-- **RF-12:** O sistema permite a busca do cadastro de cidadãos por nome completo, CPF, e-mail ou telefone.
+### [Cadastro Cidadão.RF001]
+- **Prioridade:** Essencial
+- **Descrição:** Permite o cadastramento de cidadãos que acessarão o sistema para notificar falhas em postes de iluminação pública.
+- **Campos de Entrada:**
+  - `CPF`: String, 14 caracteres, obrigatório (`XXX.XXX.XXX-XX`).
+  - `Nome completo`: String, 120 caracteres, obrigatório (mínimo de 3 caracteres).
+  - `Telefone`: String, 14 caracteres, obrigatório (`(XX)9XXXX-XXXX`).
+  - `E-mail`: String, 200 caracteres, obrigatório, alfanumérico.
+  - `Senha`: String, 30 caracteres, obrigatório.
+  - `Confirmação Senha`: String, 30 caracteres, obrigatório.
+  - `CEP`: Inteiro, 8 caracteres (`00000-000`), obrigatório.
+  - `Logradouro`: String, 100 caracteres, obrigatório.
+  - `Bairro`: String, 100 caracteres, obrigatório.
+  - `Número`: Inteiro, 10 caracteres, obrigatório.
+  - `Complemento`: String, 100 caracteres, opcional.
+- **Regras e Validações:**
+  1. O CPF deve possuir código de validação de quantidade padronizada. Se não atendida, exibe mensagem `"CPF não identificado"`, impedindo o cadastro.
+  2. O nome deve conter ao menos 3 caracteres; caso contrário, exibe `"Nome muito curto"`.
+  3. O telefone deve conter a quantidade exata de dígitos incluindo o DDD da região.
+  4. O e-mail deve conter o caractere especial `@` seguido por `.` e texto subsequente.
+  5. As senhas devem ter entre 8 e 30 caracteres. Se menor, exibe `"A senha é muito curta"`; se maior, exibe `"A senha é muito longa"`.
+  6. A confirmação de senha deve ser idêntica caractere a caractere; se divergente, exibe `"As senhas são diferentes"`.
+  7. O CEP deve conter exatamente 8 dígitos. Se menor, `"CEP muito curto"`; se maior, `"CEP muito longo"`.
+  8. O CPF é estritamente imutável após o cadastro.
+  9. Se o CEP for localizado via webservice, logradouro e bairro são autopreenchidos; caso contrário, os campos são liberados para preenchimento manual.
+  10. Validação de e-mail via envio de token de 4 dígitos gerado aleatoriamente, com validade de 5 minutos.
+  11. Validação de telefone via código de 4 dígitos com validade de 5 minutos.
+  12. Botões: `"Cadastrar"` (com validações de campos obrigatórios e mensagens `"Campo(s) obrigatório(s) não preenchido(s)"`, `"Campo preenchido incorretamente"`, `"CPF já cadastrado"`, `"E-mail já cadastrado"`) e `"Cancelar"` (com confirmação `"Todas as alterações serão perdidas. Deseja realmente cancelar?"` com botões Sim e Não).
+  13. Sucesso: redireciona para confirmação com a mensagem `"Cadastro realizado com sucesso"` e envia e-mail de confirmação.
+- **Operações:**
+  - *Alteração:* realizada pelo próprio cidadão ou funcionário com cargo a definir. Mantém histórico com responsável, ação, data e hora.
+  - *Exclusão:* exclusão lógica com anonimização dos dados pessoais, mantendo as ocorrências registradas íntegras.
+  - *Pesquisa:* busca por Nome Completo, CPF, E-mail ou Telefone.
 
-### Autenticação de Cidadãos
+---
 
-- **RF-13:** O cidadão autentica-se informando exclusivamente seu CPF e sua senha, com caracteres da senha mascarados para segurança visual.
-- **RF-14:** O sistema rejeita o acesso e exibe a mensagem "Usuário ou senha inválidos" caso o CPF não seja localizado ou a senha informada seja divergente.
-- **RF-15:** Ao autenticar-se com sucesso, o cidadão é redirecionado para a página inicial com seu painel de controle de ocorrências.
-- **RF-16:** O botão "Cancelar" na tela de login exibe aviso de confirmação e, se aceito, limpa os campos e retorna à tela pública inicial.
-- **RF-17:** O cidadão encerra sua sessão autenticada a qualquer momento, retornando à área pública.
+### [Autenticação Cidadão.RF002]
+- **Prioridade:** Essencial
+- **Descrição:** Permite a autenticação segura do cidadão previamente cadastrado.
+- **Campos de Entrada:**
+  - `CPF`: String, obrigatório.
+  - `Senha`: String, obrigatório.
+- **Regras e Validações:**
+  1. Validação de credenciais diretamente na base de dados.
+  2. Caracteres da senha mascarados para segurança visual.
+  3. Somente o CPF é aceito como identificador de login.
+  4. Ao clicar em `"Entrar"`:
+     - Se campos obrigatórios não preenchidos: `"Campo(s) obrigatório(s) não preenchido(s)"`.
+     - Se credenciais incorretas (CPF não encontrado ou senha divergente): `"Usuário ou senha inválidos"`.
+     - Se credenciais válidas: exibe confirmação e redireciona para a página inicial/painel de ocorrências.
+  5. Ao clicar em `"Cancelar"`: exibe alerta `"Deseja mesmo cancelar o login? Tudo o que foi feito será apagado"`, limpando os campos e retornando à tela inicial pública.
 
-### Cadastro de Funcionários
+---
 
-- **RF-18:** O funcionário é cadastrado informando CPF, matrícula funcional, nome completo (mínimo de 3 caracteres), cargo, telefone corporativo com DDD, e-mail institucional, senha (de 8 a 30 caracteres) e confirmação de senha.
-- **RF-19:** O sistema valida a unicidade do CPF e da matrícula funcional, tornando ambos imutáveis após o cadastro.
-- **RF-20:** O cadastro de funcionário valida e-mail e telefone mediante envio de token de 4 dígitos com validade de 5 minutos para cada canal.
-- **RF-21:** O cadastro de funcionário valida comprimento de senha (8 a 30 caracteres) e igualdade na confirmação de senha.
-- **RF-22:** A alteração de dados de funcionários só pode ser efetuada por colaborador com permissão administrativa pré-registrado, mantendo histórico de auditoria com autor, alteração, data e hora.
-- **RF-23:** A exclusão de funcionário é tratada exclusivamente como exclusão lógica (inativação do status de acesso), sendo proibida a exclusão física para preservação de auditoria.
-- **RF-24:** O sistema permite buscar funcionários por nome completo, CPF, matrícula funcional ou e-mail.
+### [Cadastro Funcionário.RF003]
+- **Prioridade:** Essencial
+- **Descrição:** Cadastro de funcionários da empresa de energia com acesso administrativo para gestão do painel de ocorrências.
+- **Campos de Entrada:**
+  - `CPF`: String, 14 caracteres, obrigatório (`XXX.XXX.XXX-XX`).
+  - `Matrícula Funcional`: String, 20 caracteres, obrigatório.
+  - `Nome completo`: String, 120 caracteres, obrigatório.
+  - `Cargo`: String, 60 caracteres, obrigatório.
+  - `Telefone`: String, 14 caracteres, obrigatório (`(XX)9XXXX-XXXX`).
+  - `E-mail`: String, 200 caracteres, institucional, obrigatório.
+  - `Senha`: String, 30 caracteres, obrigatório.
+  - `Confirmar Senha`: String, 30 caracteres, obrigatório.
+- **Regras e Validações:**
+  1. Validação de formato de CPF com mensagem `"CPF não identificado"`.
+  2. Validação de nome com mínimo de 3 caracteres (`"Nome muito curto"`).
+  3. Validação de e-mail institucional com `@` e `.`.
+  4. Senhas entre 8 e 30 caracteres (`"A senha é muito curta"`, `"A senha é muito longa"`) e confirmação idêntica.
+  5. CPF e Matrícula Funcional são estritamente imutáveis após o cadastro.
+  6. Validação de telefone com DDD.
+  7. Botões `"Cadastrar"` (com validações de campos não preenchidos, `"CPF já cadastrado"`, `"E-mail já cadastrado"`) e `"Cancelar"` (com confirmação de descarte).
+  8. Sucesso: exibe `"Cadastro realizado com sucesso"` e envia e-mail de confirmação.
+  9. Envio de tokens de 4 dígitos (validade de 5 minutos) para validação de e-mail e telefone.
+- **Operações:**
+  - *Alteração:* permitida apenas por colaborador pré-registrado na base institucional com registro de log de auditoria.
+  - *Exclusão:* exclusão estritamente lógica via inativação de status de acesso, preservando integridade de auditoria.
+  - *Pesquisa:* busca por Nome Completo, CPF, Matrícula Funcional e E-mail.
 
-### Autenticação de Funcionários
+---
 
-- **RF-25:** O funcionário autentica-se na área administrativa informando sua matrícula funcional e senha mascarada.
-- **RF-26:** O sistema valida o acesso na base institucional e, em caso de erro, exibe a mensagem "Matrícula/E-mail ou senha inválidos".
-- **RF-27:** Ao autenticar-se com sucesso, o funcionário é redirecionado para o painel de gestão corporativo de ocorrências.
-- **RF-28:** O botão "Cancelar" na tela de login administrativo limpa os campos informados e redireciona para a tela inicial pública.
+### [Autenticação Funcionário.RF004]
+- **Prioridade:** Essencial
+- **Descrição:** Autenticação dos colaboradores para acesso à área administrativa e painel de ocorrências.
+- **Campos de Entrada:**
+  - `Matrícula Funcional`: String, obrigatório.
+  - `Senha`: String, obrigatório (caracteres mascarados).
+- **Regras e Validações:**
+  1. Validação na base de colaboradores do sistema.
+  2. Botões `"Entrar"` e `"Cancelar"`.
+  3. Em erro de credenciais: `"Matrícula/E-mail ou senha inválidos"`.
+  4. Sucesso: redireciona o operador para o painel de gestão corporativo de ocorrências.
+  5. Cancelar limpa os dados e retorna à página inicial pública.
 
-### Registro de Ocorrências pelo Cidadão
+---
 
-- **RF-29:** O cidadão autenticado registra ocorrência informando número de identificação do poste (entre 8 e 10 caracteres, com máscara alfanumérica da faixa amarela), logradouro, rua, bairro, ponto de referência e tipo de defeito obrigatório.
-- **RF-30:** O sistema valida o tamanho do identificador do poste; caso tenha menos de 8 ou mais de 10 caracteres, bloqueia o envio exibindo a mensagem "Número de identificação do poste incorreta".
-- **RF-31:** O sistema oferece como opções obrigatórias de tipo de defeito: "Poste Apagado", "Luz Oscilando" e "Estrutura Danificada".
-- **RF-32:** O cidadão pode adicionar opcionalmente uma descrição detalhada de até 300 caracteres e anexar uma foto do poste.
-- **RF-33:** O sistema impede o registro de ocorrências anônimas, vinculando obrigatoriamente o CPF do cidadão autenticado e a data/hora exata do envio ao registro da ocorrência.
-- **RF-34:** O formulário valida a presença de todos os campos obrigatórios de identificação e localização física, exibindo "Não foi dada informações o suficiente" ou "Campos obrigatórios não preenchidos" com destaque visual caso faltem dados.
-- **RF-35:** Ao submeter a ocorrência com sucesso, o sistema gera um protocolo numérico de 10 dígitos, define o status inicial como "Pendente" e disponibiliza o chamado instantaneamente no painel corporativo.
-- **RF-36:** Após o registro bem-sucedido, o sistema exibe a mensagem "Ocorrência registrada com sucesso! O chamado foi encaminhado para a empresa de energia." e envia um e-mail de notificação ao cidadão com o protocolo e os dados do chamado.
-- **RF-37:** O botão "Cancelar" no formulário de ocorrência exige confirmação antes de descartar os dados e retornar à tela inicial.
+### [Registro de Ocorrência.RF005]
+- **Prioridade:** Essencial
+- **Descrição:** Permite ao cidadão autenticado notificar falhas físicas em postes de iluminação pública.
+- **Campos de Entrada:**
+  - `Número do Poste`: String, 10 caracteres, obrigatório (letras e números da faixa amarela).
+  - `Logradouro`: String, 100 caracteres, obrigatório.
+  - `Rua`: String, 100 caracteres, obrigatório.
+  - `Bairro`: String, 100 caracteres, obrigatório.
+  - `Ponto de Referência`: String, 200 caracteres, obrigatório.
+  - `Tipo de Defeito`: Seleção única, obrigatório (`"Poste Apagado"`, `"Luz Oscilando"`, `"Estrutura Danificada"`).
+  - `Descrição do Problema`: String, 300 caracteres, opcional.
+  - `Foto do Poste`: Imagem, opcional.
+- **Regras e Validações:**
+  1. Validação obrigatória de dados de localização e identificação do poste. Se ausentes, mensagem `"Não foi dada informações o suficiente"`.
+  2. Proibido registro anônimo: o CPF do cidadão autenticado é vinculado obrigatoriamente.
+  3. Foto é opcional; quando fornecida, a imagem é armazenada e seu link/caminho registrado.
+  4. Data e hora do registro capturadas automaticamente pelo sistema.
+  5. Validação do Número do Poste: deve conter entre 8 e 10 caracteres. Se menor que 8 ou maior que 10, exibe `"Número de identificação do poste incorreta"` e bloqueia o registro.
+  6. Ao finalizar, o sistema gera automaticamente uma sequência numérica de 10 caracteres (número de protocolo) e define o status como `"Pendente"`.
+  7. Envio automático de notificação por e-mail com protocolo e dados do chamado.
+  8. Botões: `"Registrar Ocorrência"` (exibe `"Ocorrência registrada com sucesso! O chamado foi encaminhado para a empresa de energia."` e disponibiliza no painel) e `"Cancelar"` (com confirmação `"Todas as informações preenchidas serão perdidas. Deseja realmente cancelar?"`).
 
-### Painel de Ocorrências do Cidadão
+---
 
-- **RF-38:** O cidadão autenticado visualiza em seu painel apenas os chamados associados ao seu próprio CPF, garantindo que não veja dados de outros usuários.
-- **RF-39:** A listagem do cidadão apresenta número de protocolo, número do poste, endereço (logradouro, rua, bairro), tipo de defeito, data/hora do registro (`DD/MM/AAAA HH:MM`) e status atual da ocorrência.
-- **RF-40:** O painel do cidadão exibe 10 ocorrências por página, ordenadas por padrão da mais recente para a mais antiga.
-- **RF-41:** O cidadão acessa a visualização detalhada de um chamado específico a partir da sua listagem.
-- **RF-42:** Quando o cidadão não possuir chamados cadastrados, o painel exibe a mensagem informativa "Nenhuma ocorrência registrada no momento".
-- **RF-43:** Em caso de indisponibilidade ou falha de conexão com a base de dados, o painel do cidadão exibe a mensagem "Não foi possível carregar o seu histórico de ocorrências. Tente novamente mais tarde".
+### [Painel de ocorrências Funcionário.RF006]
+- **Prioridade:** Essencial
+- **Descrição:** Visualização e gerenciamento das ocorrências reportadas em Maceió pelos funcionários autorizados.
+- **Campos Apresentados:**
+  - `Número do Protocolo`: String, 10 caracteres, obrigatório.
+  - `Número do Poste`: String, 8 caracteres, obrigatório.
+  - `CPF do cidadão`: String, 14 caracteres, obrigatório.
+  - `Nome Completo do cidadão`: String, 120 caracteres, obrigatório.
+  - `Logradouro`: String, 100 caracteres, obrigatório.
+  - `Rua`: String, 100 caracteres, obrigatório.
+  - `Bairro`: String, 100 caracteres, obrigatório.
+  - `Tipo de Defeito Selecionado`: String, obrigatório.
+  - `Status da Ocorrência`: String, obrigatório (`"Pendente"`, `"Em progresso"`, `"Concluído"`).
+  - `Data e Hora do Registro`: Data e Hora formatadas em `DD/MM/AAAA HH:MM`.
+- **Regras e Funcionamento:**
+  1. Acesso restrito a colaboradores com permissão administrativa ativa.
+  2. Filtro e busca rápida por Número do Poste, Bairro, Status, Nome Completo ou CPF do solicitante.
+  3. Paginação com 10 ocorrências por página, ordenadas decrescentemente por data de registro (mais recentes no topo).
+  4. Visualização de detalhes completos (incluindo foto) e alteração de status do chamado.
+  5. Sem registros correspondentes: exibe mensagem informativa `"Nenhuma ocorrência encontrada"`.
+  6. Falha no banco de dados: exibe `"Não foi possível carregar o painel de ocorrências. Tente novamente mais tarde"`.
 
-### Gestão Corporativa de Ocorrências pelo Funcionário
+---
 
-- **RF-44:** O funcionário autenticado visualiza no painel corporativo todos os chamados reportados no município de Maceió, paginados em 10 itens por página e ordenados decrescentemente por data de registro.
-- **RF-45:** A listagem corporativa exibe protocolo, número do poste, CPF e nome completo do cidadão, endereço completo, tipo de defeito, data/hora do registro (`DD/MM/AAAA HH:MM`) e status do chamado.
-- **RF-46:** O painel corporativo disponibiliza campos de filtro e busca rápida por número do poste, bairro, status do chamado, nome completo ou CPF do solicitante.
-- **RF-47:** O funcionário visualiza os detalhes completos da ocorrência selecionada (incluindo foto anexada, quando existente) e atualiza seu status entre "Pendente", "Em progresso" e "Concluído".
-- **RF-48:** Quando a consulta ou filtros não retornarem chamados, o painel exibe a mensagem "Nenhuma ocorrência encontrada".
-- **RF-49:** Em caso de falha de comunicação com a base de dados no painel corporativo, o sistema exibe a mensagem "Não foi possível carregar o painel de ocorrências. Tente novamente mais tarde".
+### [Painel de ocorrência Cidadão.RF007]
+- **Prioridade:** Essencial
+- **Descrição:** Visualização do histórico e status de chamados pelo próprio cidadão autenticado.
+- **Campos Apresentados:**
+  - `Número do Protocolo`: Serial, obrigatório.
+  - `Número do Poste`: String, 8 caracteres.
+  - `Logradouro`: String, 100 caracteres, obrigatório.
+  - `Rua`: String, 100 caracteres, obrigatório.
+  - `Bairro`: String, 100 caracteres, obrigatório.
+  - `Tipo de Defeito`: String, obrigatório.
+  - `Data do Registro`: Data e Hora em `DD/MM/AAAA HH:MM`.
+  - `Status Atual da Ocorrência`: String (`"Pendente"`, `"Em progresso"`, `"Concluído"`).
+- **Regras e Funcionamento:**
+  1. Filtro automático estritamente restrito ao CPF do cidadão logado (isolamento de chamados de terceiros).
+  2. Paginação em 10 itens por página, ordenados pela data de registro mais recente.
+  3. Opção de visualização detalhada do chamado no card/linha.
+  4. Se não houver chamados: `"Nenhuma ocorrência registrada no momento"`.
+  5. Falha de comunicação com o banco: `"Não foi possível carregar o seu histórico de ocorrências. Tente novamente mais tarde"`.
 
-## Requisitos não funcionais
+---
 
-- **RNF-01 (arquitetura):** O sistema adota o padrão MVT com separação estrita da lógica de negócio e consultas ao ORM na camada de services, conforme [`docs/arquitetura.md`](../arquitetura.md).
-- **RNF-02 (abrangência geográfica):** O sistema restringe o cadastro e processamento de ocorrências exclusivamente ao território do município de Maceió.
-- **RNF-03 (segurança e criptografia):** As senhas de cidadãos e colaboradores são armazenadas criptografadas com hash irreversível, nunca visíveis em texto plano, e os campos de senha na interface utilizam máscara de proteção visual.
-- **RNF-04 (proteção de dados e privacidade):** Dados pessoais e sensíveis (CPF, telefone, endereços) são resguardados contra visualização não autorizada, com isolamento estrito entre usuários e mecanismo de anonimização no descarte de contas.
-- **RNF-05 (usabilidade e clareza):** A interface fornece orientações claras para identificação da numeração da faixa amarela dos postes e exibe mensagens de erro explicativas e demarcadas para cada validação não atendida.
-- **RNF-06 (plataforma e responsividade):** A interface web é compatível com os principais navegadores modernos e adaptável a dispositivos móveis (smartphones), permitindo o registro ágil de ocorrências em campo.
-- **RNF-07 (desempenho e latência):** O sistema processa e responde a requisições de submissão de chamados e carregamento de painéis em no máximo 2 segundos em condições normais de uso.
-- **RNF-08 (auditoria e integridade):** A exclusão física de registros de usuários com histórico de ocorrências ou ações operacionais é proibida, garantindo rastreabilidade por meio de inativação ou anonimização com log de data/hora e autor.
-- **RNF-09 (qualidade):** Cada requisito funcional conta com pelo menos um teste automatizado correspondente na suíte de testes.
+## 5. Requisitos Não Funcionais
 
-## Fora do escopo desta versão
+| ID | Categoria | Descrição | Prioridade |
+|---|---|---|---|
+| **[RNF01]** | Usabilidade | Interface intuitiva com orientações claras sobre como localizar o número na faixa amarela do poste e o endereço, destacando mensagens de erro por campo. | Importante |
+| **[RNF02]** | Abrangência Geográfica | Operação e processamento de chamados restritos exclusivamente aos limites territoriais do município de Maceió. | Essencial |
+| **[RNF03]** | Privacidade de Dados | Proteção de dados pessoais (CPF, senhas, telefone, endereço) com criptografia irreversível de senhas e proteção visual na digitação. | Essencial |
+| **[RNF04]** | Plataforma e Acesso | Compatibilidade com principais navegadores e interface web/mobile responsiva para smartphones, viabilizando registro ágil em campo. | Essencial |
+| **[RNF05]** | Tempo de Reação | Processamento e retorno das requisições e carregamento de painéis com latência máxima de 2 segundos em condições normais. | Essencial |
 
-- Gestão interna, roteirização ou despacho de equipes de manutenção em campo da concessionária
-- Controle de suprimentos, materiais, peças de reposição e ordens de serviço internas da empresa de energia
-- Registro e acompanhamento de ocorrências fora dos limites geográficos do município de Maceió
-- Denúncias anônimas ou abertura de chamados sem autenticação prévia por CPF
-- Integração bidirecional direta com sistemas de ERP, despacho ou telemetria legados da concessionária
-- Aplicativos nativos instaláveis (iOS e Android), sendo a experiência móvel provida via web responsiva
-- Notificações por canais além de e-mail (como SMS ou push notifications nativos)
+---
 
-## Critérios de conclusão
+## 6. Requisitos de Segurança
 
-1. O cidadão realiza o cadastro completo, valida os tokens de e-mail e telefone, autentica-se e acessa seu painel pessoal.
-2. O cidadão autenticado registra uma ocorrência informando a identificação do poste e localização em Maceió, anexa foto/descrição opcional, recebe o protocolo de 10 dígitos e o e-mail de confirmação.
-3. O cidadão acompanha o histórico e o status atualizado ("Pendente", "Em progresso", "Concluído") de suas próprias ocorrências no painel pessoal, sem acesso aos dados de terceiros.
-4. O funcionário autentica-se com sua matrícula funcional, pesquisa/filtra ocorrências no painel corporativo e atualiza o status de atendimento de um chamado.
-5. A exclusão de contas de cidadãos executa a anonimização lógica mantendo os chamados íntegros, e a exclusão de funcionários realiza a inativação de acesso.
-6. Todos os requisitos funcionais possuem testes automatizados cobrindo fluxos de sucesso e exceções de validação, e a suíte completa passa sem erros.
+| ID | Perigo | Solução |
+|---|---|---|
+| **[RS001]** | Senhas vazadas de fácil visualização | Todas as senhas devem ser armazenadas em formato não-visível com hash criptográfico seguro e mascaramento visual em tela. |
 
+---
+
+## 7. Matriz de Avaliação de Risco
+
+| Severidade / Probabilidade | Catastrófico (1) | Crítico (2) | Marginal (3) | Insignificante (4) |
+|---|---|---|---|---|
+| **Frequente (A)** | | | | |
+| **Provável (B)** | | | | |
+| **Ocasional (C)** | RS004, RS006 | RS001 | | |
+| **Remoto (D)** | RS003 | RS009 | | RS005 |
+| **Improvável (E)** | RS002 | | | |
+| **Eliminado (F)** | | | | |
+
+---
+
+## 8. Matriz de Rastreabilidade
+
+Relações de dependência (`D`) e referência (`R`) entre requisitos:
+
+| ID Requisito | RF001 | RF002 | RF003 | RF004 | RF005 | RF006 | RF007 | RF008 | RF009 | RF010 | RF011 | RF012 | RF013 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| **RF001** | | R | | D | | D | D | R | D | | | D | D |
+| **RF002** | R | | | | | | | | | | | | |
+| **RF003** | | | | R | | D | | D | | | | | |
+| **RF004** | D | | R | | R | D | D | | D | D | D | R | R |
+| **RF005** | | | | R | | D | | | | | R | | |
+| **RF006** | D | | D | D | | | | D | D | R | R | R | R |
+| **RF007** | D | | D | | D | | | | D | R | R | D | D |
+| **RF008** | R | | | D | | D | | | | | | | |
+| **RF009** | D | | | D | | D | D | | | R | | D | D |
+
+---
+
+## 9. Análise por Pontos de Função (Contagem Indicativa)
+
+Classificação por tipo de função e componentes fundamentais:
+- **Funções do Tipo Dado:** Arquivo Lógico Interno (ALI) e Arquivo de Interface Externa (AIE).
+- **Funções do Tipo Transação:** Entrada Externa (EE), Saída Externa (SE) e Consulta Externa (CE).
+
+### Resumo por Requisito Funcional Inicial:
+| Requisito Funcional | Complexidade | ALI | AIE | SE | EE | CE | Total de Pontos de Função |
+|---|---|---|---|---|---|---|---|
+| **RF001 (Cadastro Cidadão)** | ALTA | 15 | 10 | 7 | 6 | 6 | **44** |
+| **RF002 (Autenticação Cidadão)** | MÉDIA | 10 | 7 | 5 | 4 | 4 | **30** |
+| **RF003 (Cadastro Funcionário)** | BAIXA | 7 | 0 | 4 | 0 | 3 | **14** |
+
+---
+
+## 10. Critérios de Conclusão e Homologação
+
+1. **Cidadão:** Realiza cadastro validando CPF, CEP e tokens de verificação de 4 dígitos em 5 minutos; autentica-se e acessa o painel de acompanhamento com seus próprios chamados.
+2. **Registro de Ocorrência:** Envio com validação de número de poste (8 a 10 dígitos na faixa amarela), localização em Maceió, tipo de defeito e geração de protocolo de 10 dígitos com envio de e-mail confirmatório.
+3. **Funcionário:** Autentica-se com matrícula funcional, pesquisa chamados paginados a 10 itens por página com filtros, acessa detalhes e atualiza status entre "Pendente", "Em progresso" e "Concluído".
+4. **Ciclo de Vida:** Exclusão de cidadão executa anonimização lógica mantendo histórico de ocorrências; exclusão de funcionário inativa o acesso sem exclusão física.
+5. **Qualidade:** Cobertura automatizada de testes cobrindo todas as validações, fluxos alternativos e mensagens literais de erro e sucesso.

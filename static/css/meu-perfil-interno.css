@@ -1,0 +1,228 @@
+/* ==========================================================================
+   meu-perfil-interno.css - Perfil do atendente/administrador (painel)
+   Consome exclusivamente variáveis definidas em root.css.
+   ========================================================================== */
+
+.perfil-interno {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Cabeçalho */
+.perfil-interno__cabecalho {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.perfil-interno__kicker {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--cor-azul-destaque);
+  margin: 0;
+}
+
+.perfil-interno__titulo {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--cor-texto-escuro);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.perfil-interno__descricao {
+  font-size: 0.875rem;
+  color: var(--cor-texto-secundario);
+  margin: 0.25rem 0 0 0;
+}
+
+/* Seções de Perfil (cards) */
+.perfil-secao {
+  padding: 1.75rem;
+}
+
+.perfil-secao__cabecalho {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.perfil-secao__titulo-grupo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.perfil-secao__titulo {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--cor-texto-principal);
+  margin: 0 0 1.25rem 0;
+}
+
+.perfil-secao__cabecalho .perfil-secao__titulo {
+  margin: 0;
+}
+
+.perfil-secao__numero {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background-color: var(--cor-azul-escuro);
+  color: var(--cor-texto-claro);
+  border-radius: 50%;
+  font-size: 0.75rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.perfil-secao__badge {
+  display: inline-block;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--cor-texto-mutado);
+  background-color: var(--cor-fundo-cinza);
+  padding: 0.25rem 0.625rem;
+  border-radius: var(--raio-pill);
+  border: 1px solid var(--cor-borda-padrao);
+}
+
+.perfil-secao__btn-editar {
+  font-size: 0.8125rem;
+  padding: 0.5rem 1rem;
+  min-height: 38px;
+}
+
+.perfil-secao__aviso {
+  font-size: 0.8125rem;
+  color: var(--cor-texto-mutado);
+  margin: 1rem 0 0 0;
+  font-style: italic;
+}
+
+/* Grid de Dados */
+.perfil-dados-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
+.perfil-dados-grid--2col {
+  grid-template-columns: 1fr 1fr;
+}
+
+.perfil-dados-grid--3col {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.perfil-dado {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.perfil-dado--full {
+  grid-column: 1 / -1;
+}
+
+.perfil-dado__label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--cor-texto-mutado);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.perfil-dado__valor {
+  font-size: 0.9375rem;
+  color: var(--cor-texto-principal);
+  padding: 0.625rem 0.875rem;
+  background-color: var(--cor-fundo-pagina);
+  border: 1px solid var(--cor-borda-padrao);
+  border-radius: var(--raio-md);
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+
+.perfil-dado__valor--bloqueado {
+  background-color: var(--cor-fundo-cinza);
+  color: var(--cor-texto-mutado);
+  justify-content: space-between;
+}
+
+.perfil-dado__icone-cadeado {
+  color: var(--cor-texto-mutado);
+  flex-shrink: 0;
+  opacity: 0.6;
+}
+
+/* Credencial */
+.perfil-credencial {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1.25rem;
+  background-color: var(--cor-fundo-pagina);
+  border: 1px solid var(--cor-borda-padrao);
+  border-radius: var(--raio-md);
+  flex-wrap: wrap;
+}
+
+.perfil-credencial__info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.perfil-credencial__icone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--cor-azul-claro);
+  color: var(--cor-azul-escuro);
+  flex-shrink: 0;
+}
+
+.perfil-credencial__titulo-texto {
+  font-size: 0.9375rem;
+  color: var(--cor-texto-principal);
+}
+
+.perfil-credencial__descricao {
+  font-size: 0.8125rem;
+  color: var(--cor-texto-mutado);
+  margin: 0.125rem 0 0 0;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .perfil-dados-grid--2col,
+  .perfil-dados-grid--3col {
+    grid-template-columns: 1fr;
+  }
+
+  .perfil-secao__cabecalho {
+    flex-direction: column;
+  }
+
+  .perfil-credencial {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

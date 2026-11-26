@@ -1,0 +1,311 @@
+/* ==========================================================================
+   editar-atendente.css - Tela de edição de atendente (Administrador)
+   Reutiliza grande parte da estrutura visual do cadastro-atendente.
+   Consome exclusivamente variáveis definidas em root.css.
+   ========================================================================== */
+
+/* Cabeçalho da Página */
+.editar-atendente {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.editar-atendente__cabecalho {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.editar-atendente__kicker {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--cor-azul-destaque);
+  margin: 0;
+}
+
+.editar-atendente__titulo-linha {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.editar-atendente__titulo {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--cor-texto-escuro);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.editar-atendente__descricao {
+  font-size: 0.875rem;
+  color: var(--cor-texto-secundario);
+  margin: 0.25rem 0 0 0;
+  max-width: 40ch;
+}
+
+/* Estatísticas */
+.editar-atendente__estatisticas {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.875rem;
+  color: var(--cor-texto-secundario);
+  flex-wrap: wrap;
+}
+
+.estatistica--ativo {
+  color: var(--cor-verde-sucesso);
+  font-weight: 600;
+}
+
+.estatistica--inativo {
+  color: var(--cor-vermelho-alerta);
+  font-weight: 600;
+}
+
+/* Formulário de Edição */
+.form-cartao {
+  padding: 1.75rem;
+}
+
+.form-secao {
+  border: none;
+  padding: 0;
+  margin: 0 0 1.75rem 0;
+}
+
+.form-secao__titulo {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--cor-texto-principal);
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--cor-borda-padrao);
+}
+
+.form-secao__numero {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background-color: var(--cor-azul-escuro);
+  color: var(--cor-texto-claro);
+  border-radius: 50%;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+/* Grid de 2 colunas para campos */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem 1.5rem;
+}
+
+/* Campo com ícone (ex: olho da senha) */
+.campo-input-icone {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.campo-input-icone .campo-input {
+  padding-right: 2.75rem;
+}
+
+.btn-mostrar-senha {
+  position: absolute;
+  right: 0.625rem;
+  background: none;
+  border: none;
+  color: var(--cor-texto-mutado);
+  cursor: pointer;
+  padding: 0.25rem;
+  display: inline-flex;
+  align-items: center;
+}
+
+.btn-mostrar-senha:hover {
+  color: var(--cor-texto-principal);
+}
+
+/* Botões do formulário */
+.form-acoes {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--cor-borda-padrao);
+}
+
+/* Tabela */
+.tabela-cartao {
+  padding: 1.5rem;
+}
+
+.tabela-busca {
+  margin-left: auto;
+}
+
+.tabela-busca__wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.tabela-busca__icone {
+  position: absolute;
+  left: 0.75rem;
+  color: var(--cor-texto-mutado);
+  pointer-events: none;
+}
+
+.tabela-busca__input {
+  padding: 0.5rem 0.875rem 0.5rem 2.25rem;
+  border: 1px solid var(--cor-borda-padrao);
+  border-radius: var(--raio-md);
+  font-size: 0.8125rem;
+  background-color: var(--cor-fundo-pagina);
+  color: var(--cor-texto-principal);
+  min-width: 220px;
+  min-height: 38px;
+  font-family: inherit;
+}
+
+.tabela-busca__input:focus {
+  border-color: var(--cor-foco);
+  outline: none;
+  box-shadow: var(--sombra-foco);
+}
+
+/* Tabela de Atendentes */
+.tabela-atendentes {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.tabela-atendentes thead {
+  background-color: var(--cor-azul-noturno);
+  color: var(--cor-texto-claro);
+}
+
+.tabela-atendentes th {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.8125rem;
+  white-space: nowrap;
+}
+
+.tabela-atendentes td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--cor-borda-padrao);
+  vertical-align: middle;
+}
+
+.tabela-atendentes tbody tr:hover {
+  background-color: var(--cor-fundo-cinza);
+}
+
+.tabela-usuario-celula {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 180px;
+}
+
+.usuario-avatar-circulo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--cor-azul-claro);
+  color: var(--cor-azul-escuro);
+  font-weight: 700;
+  font-size: 0.8125rem;
+  flex-shrink: 0;
+  border: 1px solid var(--cor-borda-clara);
+}
+
+.tabela-cpf {
+  font-family: var(--fonte-mono);
+  color: var(--cor-texto-mutado);
+  white-space: nowrap;
+}
+
+/* td é block por padrão — não aplicar flex diretamente nele */
+.tabela-seguranca {
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+/* wrapper interno que agrupa ícone + texto */
+.tabela-seguranca__conteudo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.8125rem;
+  color: var(--cor-verde-sucesso);
+  font-weight: 600;
+}
+
+.tabela-col-acoes {
+  text-align: right;
+  white-space: nowrap;
+  width: 90px;
+}
+
+.btn-tabela-acao {
+  background: none;
+  border: 1px solid var(--cor-borda-padrao);
+  border-radius: var(--raio-sm);
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--cor-texto-secundario);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  margin-left: 0.25rem;
+}
+
+.btn-tabela-acao:hover {
+  background-color: var(--cor-fundo-cinza);
+  color: var(--cor-texto-principal);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .editar-atendente__titulo-linha {
+    flex-direction: column;
+  }
+
+  .tabela-busca {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .tabela-busca__input {
+    width: 100%;
+    min-width: unset;
+  }
+}

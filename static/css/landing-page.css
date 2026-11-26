@@ -1,0 +1,186 @@
+/* ==========================================================================
+   landing-page.css - Home / Landing Page do MaisLuz Maceió
+   Consome exclusivamente variáveis definidas em root.css.
+   ========================================================================== */
+
+.landing-container {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1rem 0 3rem;
+}
+
+/* --- Hero Section --- */
+.landing-hero {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  position: relative;
+}
+
+.landing-hero__topo {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.landing-hero__titulo {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--cor-texto-escuro);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin: 0;
+  max-width: 22ch;
+}
+
+.landing-hero__descricao {
+  font-size: 1.125rem;
+  color: var(--cor-texto-secundario);
+  line-height: 1.5;
+  margin: 0;
+  max-width: 60ch;
+}
+
+.landing-hero__acoes {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.landing-hero__acoes .btn {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+}
+
+/* --- Seção Como Funciona --- */
+.como-funciona {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.como-funciona__titulo {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--cor-texto-escuro);
+  margin: 0;
+}
+
+.como-funciona__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.passo-card {
+  background-color: var(--cor-fundo-cartao);
+  border: 1px solid var(--cor-borda-padrao);
+  border-radius: var(--raio-lg);
+  padding: 1.75rem;
+  box-shadow: var(--sombra-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.passo-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--sombra-md);
+}
+
+.passo-card__numero {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--cor-azul-escuro);
+  display: inline-block;
+  margin-bottom: 0.25rem;
+}
+
+.passo-card__titulo {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--cor-texto-principal);
+  margin: 0;
+}
+
+.passo-card__descricao {
+  font-size: 0.875rem;
+  color: var(--cor-texto-secundario);
+  line-height: 1.45;
+  margin: 0;
+}
+
+/* --- Card de Notificação e Acompanhamento --- */
+.alerta-acompanhamento {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background-color: var(--cor-fundo-cartao);
+  border: 1px solid var(--cor-borda-padrao);
+  border-radius: var(--raio-lg);
+  padding: 1.25rem 1.5rem;
+  box-shadow: var(--sombra-sm);
+}
+
+.alerta-acompanhamento__icone {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--cor-azul-claro);
+  color: var(--cor-azul-destaque);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.alerta-acompanhamento__texto {
+  font-size: 0.875rem;
+  color: var(--cor-texto-secundario);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.alerta-acompanhamento__texto strong {
+  display: block;
+  font-size: 0.9375rem;
+  color: var(--cor-texto-principal);
+  margin-bottom: 0.125rem;
+}
+
+/* Responsividade */
+@media (max-width: 900px) {
+  .como-funciona__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .landing-hero__titulo {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .landing-hero__titulo {
+    font-size: 1.75rem;
+  }
+
+  .landing-hero__acoes {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .landing-hero__acoes .btn {
+    width: 100%;
+  }
+
+  .alerta-acompanhamento {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

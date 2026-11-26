@@ -291,15 +291,20 @@
   white-space: nowrap;
 }
 
+/* td é block por padrão — não aplicar flex diretamente nele */
 .tabela-seguranca {
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+/* wrapper interno que agrupa ícone + texto */
+.tabela-seguranca__conteudo {
   display: inline-flex;
   align-items: center;
   gap: 0.375rem;
   font-size: 0.8125rem;
   color: var(--cor-verde-sucesso);
   font-weight: 600;
-  white-space: nowrap;
-  vertical-align: middle;
 }
 
 .tabela-col-acoes {

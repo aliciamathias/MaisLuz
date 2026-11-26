@@ -1,0 +1,195 @@
+{% extends 'base_publico.html' %}
+{% load static %}
+
+{% block title %}Recuperar Senha • Cidadão • MaisLuz Maceió{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/recuperar-senha-cidadao.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="recuperar-senha-container">
+  <!-- Cabeçalho -->
+  <header class="recuperar-cabecalho">
+    <p class="recuperar-cabecalho__kicker">Portal do Cidadão / Recuperação de Acesso</p>
+    <h1 class="recuperar-cabecalho__titulo">Uma cidade mais iluminada começa com você.</h1>
+    <p class="recuperar-cabecalho__subtitulo">
+      Redefina sua senha em poucos passos para voltar a registrar e acompanhar ocorrências.
+    </p>
+  </header>
+
+  <!-- Stepper de Etapas -->
+  <nav class="stepper-nav" aria-label="Etapas de recuperação de senha">
+    <ol class="stepper-lista">
+      <li class="stepper-item stepper-item--ativo" aria-current="step">
+        <span class="stepper-item__numero">1</span>
+        <span>Identificação de conta</span>
+      </li>
+      <li class="stepper-item">
+        <span class="stepper-item__numero">2</span>
+        <span>Código de verificação</span>
+      </li>
+      <li class="stepper-item">
+        <span class="stepper-item__numero">3</span>
+        <span>Nova senha</span>
+      </li>
+    </ol>
+  </nav>
+
+  <!-- Cartão de Recuperação -->
+  <section class="recuperar-cartao" aria-labelledby="titulo-recuperar-senha">
+    <div class="recuperar-cartao__topo">
+      <h2 id="titulo-recuperar-senha" class="recuperar-cartao__titulo">Recuperar Senha</h2>
+      <span class="recuperar-cartao__obrigatorio">* Campos obrigatórios</span>
+    </div>
+
+    <form method="post" action="#" novalidate>
+      {% csrf_token %}
+
+      <!-- Seção 01: Identificação de conta -->
+      <fieldset class="recuperar-secao">
+        <legend class="recuperar-secao__legenda">
+          <span class="recuperar-secao__numero" aria-hidden="true">01</span>
+          <span>Identificação de conta</span>
+        </legend>
+
+        <div class="campo-grupo">
+          <label for="id_identificador" class="campo-label">E-mail ou CPF *</label>
+          <div class="campo-input-icone">
+            <input
+              type="text"
+              id="id_identificador"
+              name="identificador"
+              class="campo-input"
+              placeholder="Digite seu CPF (XXX.XXX.XXX-XX) cadastrado"
+              required
+              autocomplete="username"
+            >
+            <span class="campo-icone-embutido" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+              </svg>
+            </span>
+          </div>
+          <span class="campo-dica">Informe seu identificador para localizarmos sua conta no sistema.</span>
+        </div>
+      </fieldset>
+
+      <!-- Seção 02: Código de Verificação -->
+      <fieldset class="recuperar-secao">
+        <legend class="recuperar-secao__legenda">
+          <span class="recuperar-secao__numero" aria-hidden="true">02</span>
+          <span>Código de Verificação (Enviado por E-mail)</span>
+        </legend>
+
+        <div class="campo-grupo">
+          <label for="id_codigo" class="campo-label">Código de Confirmação *</label>
+          <input
+            type="text"
+            id="id_codigo"
+            name="codigo"
+            class="campo-input"
+            placeholder="000000 (6 dígitos)"
+            maxlength="6"
+            required
+            autocomplete="one-time-code"
+          >
+          <div class="recuperar-reenviar-link">
+            Não recebeu? <a href="#">Reenviar código</a>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- Seção 03: Defina uma nova Senha -->
+      <fieldset class="recuperar-secao">
+        <legend class="recuperar-secao__legenda">
+          <span class="recuperar-secao__numero" aria-hidden="true">03</span>
+          <span>Defina uma nova Senha</span>
+        </legend>
+
+        <div class="recuperar-grid-2col">
+          <div class="campo-grupo">
+            <label for="id_nova_senha" class="campo-label">Nova Senha *</label>
+            <div class="campo-input-icone">
+              <input
+                type="password"
+                id="id_nova_senha"
+                name="nova_senha"
+                class="campo-input"
+                placeholder="Crie uma senha segura (mínimo de 8 caracteres)"
+                required
+                autocomplete="new-password"
+              >
+              <button type="button" class="btn-mostrar-senha" aria-label="Mostrar ou ocultar nova senha">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="campo-grupo">
+            <label for="id_confirma_senha" class="campo-label">Confirmação de Senha *</label>
+            <div class="campo-input-icone">
+              <input
+                type="password"
+                id="id_confirma_senha"
+                name="confirma_senha"
+                class="campo-input"
+                placeholder="Repita sua nova senha"
+                required
+                autocomplete="new-password"
+              >
+              <button type="button" class="btn-mostrar-senha" aria-label="Mostrar ou ocultar confirmação de senha">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- Ações -->
+      <div class="recuperar-acoes">
+        <a href="{% url 'contas:entrar' %}" class="btn btn--outline">
+          Cancelar
+        </a>
+        <button type="submit" class="btn btn--primario-amarelo">
+          Redefinir Senha
+        </button>
+      </div>
+    </form>
+  </section>
+
+  <!-- Suporte 156 -->
+  <p class="link-suporte-156">
+    Precisa de ajuda para se cadastrar? Ligue <strong>156</strong>.
+  </p>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var btnsSenha = document.querySelectorAll('.btn-mostrar-senha');
+    btnsSenha.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var input = this.parentElement.querySelector('input');
+        if (input) {
+          if (input.type === 'password') {
+            input.type = 'text';
+            this.setAttribute('aria-label', 'Ocultar senha');
+          } else {
+            input.type = 'password';
+            this.setAttribute('aria-label', 'Mostrar senha');
+          }
+        }
+      });
+    });
+  });
+</script>
+{% endblock %}

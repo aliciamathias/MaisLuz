@@ -18,6 +18,16 @@ from django.core.management.utils import get_random_secret_key
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Carrega variáveis do arquivo .env local, se existir
+_env_file = BASE_DIR / '.env'
+if _env_file.exists():
+    with open(_env_file, encoding='utf-8') as _f:
+        for _line in _f:
+            _line = _line.strip()
+            if _line and not _line.startswith('#') and '=' in _line:
+                _k, _v = _line.split('=', 1)
+                os.environ.setdefault(_k.strip(), _v.strip())
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
@@ -42,6 +52,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'contas',
+    'ocorrencias',
 ]
 
 MIDDLEWARE = [
@@ -77,12 +88,27 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+DB_ENGINE = os.environ.get("DB_ENGINE")
+DB_NAME = os.environ.get("DB_NAME") or os.environ.get("POSTGRES_DB")
+
+if DB_ENGINE == "django.db.backends.postgresql" or (DB_ENGINE is None and DB_NAME):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': DB_NAME or 'maisluz',
+            'USER': os.environ.get("DB_USER") or os.environ.get("POSTGRES_USER", "postgres"),
+            'PASSWORD': os.environ.get("DB_PASSWORD") or os.environ.get("POSTGRES_PASSWORD", ""),
+            'HOST': os.environ.get("DB_HOST") or os.environ.get("POSTGRES_HOST", "localhost"),
+            'PORT': os.environ.get("DB_PORT") or os.environ.get("POSTGRES_PORT", "5432"),
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 
 # Password validation
@@ -139,3 +165,8 @@ MAILERS = {
 AUTH_USER_MODEL = 'contas.Usuario'
 
 LOGIN_URL = 'contas:entrar'
+
+AUTHENTICATION_BACKENDS = [
+    'contas.backends.CPFEmailBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]

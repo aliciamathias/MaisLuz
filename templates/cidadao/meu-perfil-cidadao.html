@@ -1,0 +1,332 @@
+{% extends 'base_publico.html' %}
+{% load static %}
+
+{% block title %}Meu Perfil • MaisLuz Maceió{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/meu-perfil-cidadao.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="perfil-cidadao">
+  <!-- Cabeçalho -->
+  <header class="perfil-cidadao__cabecalho">
+    <h1 class="perfil-cidadao__titulo">Meu Perfil</h1>
+    <p class="perfil-cidadao__descricao">
+      Suas informações cadastrais e dados de contato para acompanhamento de chamados.
+    </p>
+  </header>
+
+  <!-- Mensagens do Django Messages -->
+  {% if messages %}
+    <div class="mensagens-alertas" role="region" aria-label="Mensagens do sistema">
+      {% for message in messages %}
+        <div class="alerta alerta--{{ message.tags }}" role="alert">
+          {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  {% if erro_geral %}
+    <div class="login-alerta-erro" role="alert" style="margin-bottom: 1.5rem;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="12"></line>
+        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+      </svg>
+      <span>{{ erro_geral }}</span>
+    </div>
+  {% endif %}
+
+  <!-- Card Principal / Formulário de Edição -->
+  <section class="cartao perfil-cidadao__card" aria-labelledby="titulo-dados-cidadao">
+    <div class="perfil-cidadao__card-cabecalho">
+      <h2 id="titulo-dados-cidadao" class="perfil-cidadao__card-titulo">Dados do Cidadão</h2>
+      <span class="badge badge--ativo">Conta Ativa</span>
+    </div>
+
+    <form method="post" action="{% url 'meu_perfil_cidadao' %}" id="form-perfil-cidadao" novalidate>
+      {% csrf_token %}
+
+      <!-- Seção 01: Identificação (CPF Imutável) -->
+      <div class="perfil-cidadao__secao">
+        <h3 class="perfil-cidadao__secao-titulo">
+          <span class="perfil-cidadao__secao-numero">01</span>
+          Identificação
+        </h3>
+
+        <div class="perfil-cidadao__dados">
+          <div class="campo-grupo">
+            <label for="id_cpf_readonly" class="campo-label">CPF (Imutável • chave única do cidadão)</label>
+            <input 
+              type="text" 
+              id="id_cpf_readonly" 
+              class="campo-input" 
+              value="{{ usuario.cpf|default:usuario.username }}" 
+              readonly 
+              style="background-color: var(--cor-cinza-claro, #f1f5f9); cursor: not-allowed; font-family: monospace;"
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- Seção 02: Informações Pessoais & Contato -->
+      <div class="perfil-cidadao__secao">
+        <h3 class="perfil-cidadao__secao-titulo">
+          <span class="perfil-cidadao__secao-numero">02</span>
+          Informações Pessoais &amp; Contato
+        </h3>
+
+        <div class="grid-campos">
+          <div class="campo-grupo">
+            <label for="id_nome" class="campo-label">Nome Completo *</label>
+            <input 
+              type="text" 
+              id="id_nome" 
+              name="nome" 
+              value="{{ form.nome.value|default:usuario.nome_completo|default:usuario.get_full_name }}" 
+              class="campo-input {% if form.nome.errors %}campo-input--erro{% endif %}"
+              required
+            >
+            {% if form.nome.errors %}
+              <span class="campo-erro" role="alert">{{ form.nome.errors.0 }}</span>
+            {% endif %}
+          </div>
+
+          <div class="grid-campos--2col" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin-top: 1rem;">
+            <div class="campo-grupo">
+              <label for="id_email" class="campo-label">E-mail *</label>
+              <input 
+                type="email" 
+                id="id_email" 
+                name="email" 
+                value="{{ form.email.value|default:usuario.email }}" 
+                class="campo-input {% if form.email.errors %}campo-input--erro{% endif %}"
+                required
+              >
+              {% if form.email.errors %}
+                <span class="campo-erro" role="alert">{{ form.email.errors.0 }}</span>
+              {% endif %}
+            </div>
+
+            <div class="campo-grupo">
+              <label for="id_celular" class="campo-label">Celular / WhatsApp *</label>
+              <input 
+                type="tel" 
+                id="id_celular" 
+                name="celular" 
+                value="{{ form.celular.value|default:usuario.telefone }}" 
+                class="campo-input {% if form.celular.errors %}campo-input--erro{% endif %}"
+                required
+              >
+              {% if form.celular.errors %}
+                <span class="campo-erro" role="alert">{{ form.celular.errors.0 }}</span>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Seção 03: Endereço -->
+      <div class="perfil-cidadao__secao">
+        <h3 class="perfil-cidadao__secao-titulo">
+          <span class="perfil-cidadao__secao-numero">03</span>
+          Endereço
+        </h3>
+
+        <div class="grid-campos">
+          <div class="cep-linha" style="margin-bottom: 1rem;">
+            <div class="campo-grupo cep-linha__campo">
+              <label for="id_cep" class="campo-label">CEP</label>
+              <input 
+                type="text" 
+                id="id_cep" 
+                name="cep" 
+                value="{{ form.cep.value|default:usuario.cep }}" 
+                class="campo-input {% if form.cep.errors %}campo-input--erro{% endif %}"
+                placeholder="00000-000"
+                maxlength="9"
+                autocomplete="postal-code"
+              >
+              {% if form.cep.errors %}
+                <span class="campo-erro" role="alert">{{ form.cep.errors.0 }}</span>
+              {% endif %}
+            </div>
+            <button type="button" class="btn btn--secundario btn-buscar-cep" id="btn-buscar-cep">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <span>Buscar CEP</span>
+            </button>
+            <span class="cep-dica" id="cep-feedback" aria-live="polite">Informe o CEP para atualizar logradouro e bairro em Maceió/AL.</span>
+          </div>
+
+          <div class="grid-campos--2col" style="display: grid; grid-template-columns: 2fr 1fr; gap: 1rem;">
+            <div class="campo-grupo">
+              <label for="id_logradouro" class="campo-label">Logradouro</label>
+              <input 
+                type="text" 
+                id="id_logradouro" 
+                name="logradouro" 
+                value="{{ form.logradouro.value|default:usuario.logradouro }}" 
+                class="campo-input {% if form.logradouro.errors %}campo-input--erro{% endif %}"
+              >
+              {% if form.logradouro.errors %}
+                <span class="campo-erro" role="alert">{{ form.logradouro.errors.0 }}</span>
+              {% endif %}
+            </div>
+
+            <div class="campo-grupo">
+              <label for="id_bairro" class="campo-label">Bairro</label>
+              <input 
+                type="text" 
+                id="id_bairro" 
+                name="bairro" 
+                value="{{ form.bairro.value|default:usuario.bairro }}" 
+                class="campo-input {% if form.bairro.errors %}campo-input--erro{% endif %}"
+              >
+              {% if form.bairro.errors %}
+                <span class="campo-erro" role="alert">{{ form.bairro.errors.0 }}</span>
+              {% endif %}
+            </div>
+          </div>
+
+            <div class="campo-grupo">
+              <label for="id_numero" class="campo-label">Número</label>
+              <input 
+                type="text" 
+                id="id_numero" 
+                name="numero" 
+                value="{{ form.numero.value|default:usuario.numero }}" 
+                class="campo-input {% if form.numero.errors %}campo-input--erro{% endif %}"
+              >
+              {% if form.numero.errors %}
+                <span class="campo-erro" role="alert">{{ form.numero.errors.0 }}</span>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="campo-grupo" style="margin-top: 1rem;">
+            <label for="id_complemento" class="campo-label">Complemento</label>
+            <input 
+              type="text" 
+              id="id_complemento" 
+              name="complemento" 
+              value="{{ form.complemento.value|default:usuario.complemento }}" 
+              class="campo-input {% if form.complemento.errors %}campo-input--erro{% endif %}"
+            >
+            {% if form.complemento.errors %}
+              <span class="campo-erro" role="alert">{{ form.complemento.errors.0 }}</span>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Seção 04: Segurança da Conta (Alteração Opcional de Senha) -->
+      <div class="perfil-cidadao__secao">
+        <h3 class="perfil-cidadao__secao-titulo">
+          <span class="perfil-cidadao__secao-numero">04</span>
+          Segurança da Conta (opcional)
+        </h3>
+        <p style="font-size: 0.875rem; color: var(--cor-texto-secundario); margin-top: -0.5rem; margin-bottom: 1rem;">
+          Preencha apenas se desejar alterar sua senha atual.
+        </p>
+
+        <div class="grid-campos--2col" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem;">
+          <div class="campo-grupo">
+            <label for="id_nova_senha" class="campo-label">Nova Senha</label>
+            <input 
+              type="password" 
+              id="id_nova_senha" 
+              name="nova_senha" 
+              class="campo-input {% if form.nova_senha.errors %}campo-input--erro{% endif %}"
+              placeholder="Deixe em branco para manter a atual"
+              autocomplete="new-password"
+            >
+            {% if form.nova_senha.errors %}
+              <span class="campo-erro" role="alert">{{ form.nova_senha.errors.0 }}</span>
+            {% endif %}
+          </div>
+
+          <div class="campo-grupo">
+            <label for="id_confirmacao_nova_senha" class="campo-label">Confirmar Nova Senha</label>
+            <input 
+              type="password" 
+              id="id_confirmacao_nova_senha" 
+              name="confirmacao_nova_senha" 
+              class="campo-input {% if form.confirmacao_nova_senha.errors %}campo-input--erro{% endif %}"
+              placeholder="Repita a nova senha exatamente igual"
+              autocomplete="new-password"
+            >
+            {% if form.confirmacao_nova_senha.errors %}
+              <span class="campo-erro" role="alert">{{ form.confirmacao_nova_senha.errors.0 }}</span>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Ações: Salvar e Cancelar -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; gap: 1rem; flex-wrap: wrap;">
+        <button type="button" class="btn btn--outline" id="btn-cancelar-perfil">
+          Cancelar
+        </button>
+        <button type="submit" class="btn btn--primario-amarelo">
+          Salvar Alterações
+        </button>
+      </div>
+    </form>
+  </section>
+</div>
+
+<!-- Modal de Cancelamento de Edição de Perfil -->
+<dialog id="modal-cancelar-perfil" class="modal-confirmacao">
+  <div class="modal-confirmacao__conteudo" role="alertdialog" aria-labelledby="modal-perfil-titulo" aria-describedby="modal-perfil-desc">
+    <h3 id="modal-perfil-titulo" class="modal-confirmacao__titulo">Cancelar alterações?</h3>
+    <p id="modal-perfil-desc" class="modal-confirmacao__texto">Todas as alterações serão perdidas. Deseja realmente cancelar?</p>
+    <div class="modal-confirmacao__acoes">
+      <button type="button" class="btn btn--outline" id="btn-modal-perfil-nao">Não</button>
+      <button type="button" class="btn btn--destrutivo" id="btn-modal-perfil-sim">Sim</button>
+    </div>
+  </div>
+</dialog>
+
+<script src="{% static 'js/viacep.js' %}"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Integração ViaCEP (RF008, RNF02, RNF07)
+    ViaCEP.inicializar({
+      cepInput: 'id_cep',
+      logradouroInput: 'id_logradouro',
+      bairroInput: 'id_bairro',
+      numeroInput: 'id_numero',
+      btnBuscar: 'btn-buscar-cep',
+      feedbackEl: 'cep-feedback'
+    });
+
+    var btnCancelar = document.getElementById('btn-cancelar-perfil');
+    var modal = document.getElementById('modal-cancelar-perfil');
+    var btnNao = document.getElementById('btn-modal-perfil-nao');
+    var btnSim = document.getElementById('btn-modal-perfil-sim');
+    var form = document.getElementById('form-perfil-cidadao');
+
+    if (btnCancelar && modal) {
+      btnCancelar.addEventListener('click', function() {
+        modal.showModal();
+      });
+    }
+    if (btnNao && modal) {
+      btnNao.addEventListener('click', function() {
+        modal.close();
+      });
+    }
+    if (btnSim && modal && form) {
+      btnSim.addEventListener('click', function() {
+        modal.close();
+        window.location.reload();
+      });
+    }
+  });
+</script>
+{% endblock %}

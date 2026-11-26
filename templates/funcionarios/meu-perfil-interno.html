@@ -1,0 +1,133 @@
+{% extends 'base_interno.html' %}
+{% load static %}
+
+{% block title %}Meu Perfil • Área do Atendente • MaisLuz Maceió{% endblock %}
+
+{% block breadcrumb %}Meu Perfil{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/meu-perfil-interno.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="perfil-interno">
+  <!-- Cabeçalho -->
+  <header class="perfil-interno__cabecalho">
+    <p class="perfil-interno__kicker">Minha Conta</p>
+    <h1 class="perfil-interno__titulo">Meu Perfil</h1>
+    <p class="perfil-interno__descricao">
+      Visualize e atualize suas informações pessoais e de contato.
+    </p>
+  </header>
+
+  <!-- Seção 01: Dados Pessoais (somente leitura) -->
+  <section class="cartao perfil-secao" aria-labelledby="titulo-dados-pessoais">
+    <div class="perfil-secao__cabecalho">
+      <div class="perfil-secao__titulo-grupo">
+        <h2 id="titulo-dados-pessoais" class="perfil-secao__titulo">
+          <span class="perfil-secao__numero">01</span>
+          Dados Pessoais
+        </h2>
+        <span class="perfil-secao__badge">Somente Leitura</span>
+      </div>
+      <a href="#" class="btn btn--outline perfil-secao__btn-editar">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 20h9"></path>
+          <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+        </svg>
+        Editar Perfil
+      </a>
+    </div>
+
+    <div class="perfil-dados-grid perfil-dados-grid--3col">
+      <div class="perfil-dado">
+        <span class="perfil-dado__label">CPF • chave única</span>
+        <div class="perfil-dado__valor perfil-dado__valor--bloqueado">
+          <span>***.***.***.***-**</span>
+          <svg class="perfil-dado__icone-cadeado" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0110 0v4"></path>
+          </svg>
+        </div>
+      </div>
+      <div class="perfil-dado">
+        <span class="perfil-dado__label">Matrícula Funcional</span>
+        <div class="perfil-dado__valor perfil-dado__valor--bloqueado">
+          <span>#8942</span>
+          <svg class="perfil-dado__icone-cadeado" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0110 0v4"></path>
+          </svg>
+        </div>
+      </div>
+      <div class="perfil-dado">
+        <span class="perfil-dado__label">Cargo</span>
+        <div class="perfil-dado__valor perfil-dado__valor--bloqueado">
+          <span>Atendente</span>
+          <svg class="perfil-dado__icone-cadeado" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0110 0v4"></path>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <p class="perfil-secao__aviso">
+      Os dados de identificação são gerenciados pela administração e não podem ser alterados neste perfil.
+    </p>
+  </section>
+
+  <!-- Seção 02: Dados Pessoais & Contatos -->
+  <section class="cartao perfil-secao" aria-labelledby="titulo-contatos">
+    <h2 id="titulo-contatos" class="perfil-secao__titulo">
+      <span class="perfil-secao__numero">02</span>
+      Dados Pessoais &amp; Contatos
+    </h2>
+
+    <div class="perfil-dados-grid">
+      <div class="perfil-dado perfil-dado--full">
+        <span class="perfil-dado__label">Nome Completo</span>
+        <div class="perfil-dado__valor">Operador de Exemplo</div>
+      </div>
+    </div>
+    <div class="perfil-dados-grid perfil-dados-grid--2col">
+      <div class="perfil-dado">
+        <span class="perfil-dado__label">Celular</span>
+        <div class="perfil-dado__valor">(82) 99123-4567</div>
+      </div>
+      <div class="perfil-dado">
+        <span class="perfil-dado__label">E-mail</span>
+        <div class="perfil-dado__valor">operador@maceio.al.gov.br</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção 03: Credenciais -->
+  <section class="cartao perfil-secao" aria-labelledby="titulo-credenciais">
+    <h2 id="titulo-credenciais" class="perfil-secao__titulo">
+      <span class="perfil-secao__numero">03</span>
+      Credenciais
+    </h2>
+
+    <div class="perfil-credencial">
+      <div class="perfil-credencial__info">
+        <div class="perfil-credencial__icone" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          </svg>
+        </div>
+        <div>
+          <strong class="perfil-credencial__titulo-texto">Senha de acesso</strong>
+          <p class="perfil-credencial__descricao">Mantenha sua conta protegida. Não compartilhe sua senha.</p>
+        </div>
+      </div>
+      <a href="#" class="btn btn--outline perfil-secao__btn-editar">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 20h9"></path>
+          <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+        </svg>
+        Alterar Minha Senha
+      </a>
+    </div>
+  </section>
+</div>
+{% endblock %}

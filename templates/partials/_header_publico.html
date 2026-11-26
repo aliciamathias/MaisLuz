@@ -1,7 +1,7 @@
 {% load static %}
 <header class="publico-cabecalho" role="banner">
   <div class="publico-cabecalho__container">
-    <a href="{% url 'registrar_ocorrencia' %}" class="marca-bloco" aria-label="MaisLuz Maceió - Página inicial do cidadão">
+    <a href="{% url 'inicio' %}" class="marca-bloco" aria-label="MaisLuz Maceió - Página inicial do cidadão">
       <div class="marca-icone" aria-hidden="true">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M9 18h6"></path>
@@ -15,32 +15,54 @@
       </div>
     </a>
 
-    <nav class="publico-nav" aria-label="Navegação principal do cidadão">
-      <ul class="publico-nav__lista">
-        <li>
-          <a href="{% url 'registrar_ocorrencia' %}" class="publico-nav__link" {% if request.resolver_match.url_name == 'registrar_ocorrencia' or not request.resolver_match.url_name %}aria-current="page"{% endif %}>
-            Registrar ocorrência
-          </a>
-        </li>
-        <li>
-          <a href="#" class="publico-nav__link">
-            Minhas ocorrências
-          </a>
-        </li>
-        <li>
-          <a href="#" class="publico-nav__link">
-            Ajuda
-          </a>
-        </li>
-      </ul>
+    <nav class="publico-nav" aria-label="Navegação do portal">
+      {% if header_variante == 'landing' %}
+        <div class="publico-nav__auth">
+          <a href="{% url 'contas:entrar' %}" class="publico-nav__link-simples">Acessar Conta</a>
+          <a href="{% url 'cadastro_cidadao' %}" class="btn-header-auth">Cadastre-se</a>
+        </div>
+      {% elif header_variante == 'cadastro' %}
+        <div class="publico-nav__auth">
+          <span class="publico-nav__texto-apoio">Já tem uma conta?</span>
+          <a href="{% url 'contas:entrar' %}" class="btn-header-auth">Entrar</a>
+        </div>
+      {% elif header_variante == 'login' %}
+        <div class="publico-nav__auth">
+          <span class="publico-nav__texto-apoio">Ainda não tem uma conta?</span>
+          <a href="{% url 'cadastro_cidadao' %}" class="btn-header-auth">Cadastre-se</a>
+        </div>
+      {% elif header_variante == 'recuperar_senha' %}
+        <div class="publico-nav__auth">
+          <span class="publico-nav__texto-apoio">Lembrou a senha?</span>
+          <a href="{% url 'contas:entrar' %}" class="btn-header-auth">Entrar</a>
+        </div>
+      {% else %}
+        <ul class="publico-nav__lista">
+          <li>
+            <a href="{% url 'registrar_ocorrencia' %}" class="publico-nav__link" {% if request.resolver_match.url_name == 'registrar_ocorrencia' %}aria-current="page"{% endif %}>
+              Registrar ocorrência
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'minhas_ocorrencias' %}" class="publico-nav__link" {% if request.resolver_match.url_name == 'minhas_ocorrencias' %}aria-current="page"{% endif %}>
+              Minhas ocorrências
+            </a>
+          </li>
+          <li>
+            <a href="#" class="publico-nav__link">
+              Ajuda
+            </a>
+          </li>
+        </ul>
 
-      <div class="publico-usuario" aria-label="Perfil do usuário atual">
-        <span class="publico-usuario__avatar" aria-hidden="true">AC</span>
-        <span class="publico-usuario__nome">Ana • Cidadã</span>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-          <polyline points="6 9 12 15 18 9"></polyline>
-        </svg>
-      </div>
+        <div class="publico-usuario" aria-label="Perfil do usuário atual">
+          <span class="publico-usuario__avatar" aria-hidden="true">AC</span>
+          <span class="publico-usuario__nome">Ana • Cidadã</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </div>
+      {% endif %}
     </nav>
   </div>
 </header>

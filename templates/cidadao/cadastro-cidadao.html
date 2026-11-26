@@ -1,0 +1,425 @@
+{% extends 'base_publico.html' %}
+{% load static %}
+
+{% block title %}Cadastro do Cidadão • MaisLuz Maceió{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/cadastro-cidadao.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="cadastro-cidadao-container">
+  <!-- Cabeçalho do Portal -->
+  <header class="portal-cabecalho">
+    <p class="portal-cabecalho__kicker">Portal do Cidadão / Primeiro Acesso</p>
+    <h1 class="portal-cabecalho__titulo">Uma cidade mais iluminada começa com você.</h1>
+    <p class="portal-cabecalho__subtitulo">
+      Crie sua conta para registrar problemas de iluminação e acompanhar cada solução.
+    </p>
+  </header>
+
+  <!-- Stepper de Etapas -->
+  <nav class="stepper-nav" aria-label="Etapas do cadastro">
+    <ol class="stepper-lista">
+      <li class="stepper-item stepper-item--ativo" aria-current="step">
+        <span class="stepper-item__numero">1</span>
+        <span>Preencha seus dados</span>
+      </li>
+      <li class="stepper-item">
+        <span class="stepper-item__numero">2</span>
+        <span>Confirme seu endereço</span>
+      </li>
+      <li class="stepper-item">
+        <span class="stepper-item__numero">3</span>
+        <span>Confirme seu contato e acesse o MaisLuz</span>
+      </li>
+    </ol>
+  </nav>
+
+  <!-- Cartão do Formulário -->
+  <section class="cadastro-cartao" aria-labelledby="titulo-cadastro-cidadao">
+    <div class="cadastro-cartao__topo">
+      <h2 id="titulo-cadastro-cidadao" class="cadastro-cartao__titulo">Cadastro do cidadão</h2>
+      <span class="cadastro-cartao__obrigatorio">* Campos obrigatórios</span>
+    </div>
+
+    {% if erro_geral %}
+      <div class="login-alerta-erro" role="alert" style="margin-bottom: 1.5rem;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+        <span>{{ erro_geral }}</span>
+      </div>
+    {% endif %}
+
+    <form method="post" action="{% url 'cadastro_cidadao' %}" class="cadastro-cidadao-form" id="form-cadastro-cidadao" novalidate>
+      {% csrf_token %}
+
+      <!-- Seção 01: Identificação e Segurança -->
+      <fieldset class="secao-cadastro">
+        <legend class="secao-cadastro__legenda">
+          <span class="secao-cadastro__numero" aria-hidden="true">01</span>
+          <span>Identificação e segurança</span>
+        </legend>
+
+        <div class="grid-campos">
+          <div class="campo-grupo">
+            <label for="id_nome" class="campo-label">Nome Completo *</label>
+            <input
+              type="text"
+              id="id_nome"
+              name="nome"
+              value="{{ form.nome.value|default:'' }}"
+              class="campo-input {% if form.nome.errors %}campo-input--erro{% endif %}"
+              placeholder="Digite seu nome completo"
+              required
+              autocomplete="name"
+            >
+            {% if form.nome.errors %}
+              <span class="campo-erro" role="alert">{{ form.nome.errors.0 }}</span>
+            {% endif %}
+          </div>
+
+          <div class="campo-grupo">
+            <label for="id_email" class="campo-label">E-mail *</label>
+            <div class="campo-input-icone">
+              <input
+                type="email"
+                id="id_email"
+                name="email"
+                value="{{ form.email.value|default:'' }}"
+                class="campo-input {% if form.email.errors %}campo-input--erro{% endif %}"
+                placeholder="seunome@exemplo.com"
+                required
+                autocomplete="email"
+              >
+              <span class="campo-icone-embutido" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                  <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+              </span>
+            </div>
+            {% if form.email.errors %}
+              <span class="campo-erro" role="alert">{{ form.email.errors.0 }}</span>
+            {% endif %}
+          </div>
+
+          <div class="grid-campos--2col">
+            <div class="campo-grupo">
+              <label for="id_senha" class="campo-label">Senha *</label>
+              <div class="campo-input-icone">
+                <input
+                  type="password"
+                  id="id_senha"
+                  name="senha"
+                  class="campo-input {% if form.senha.errors %}campo-input--erro{% endif %}"
+                  placeholder="Crie uma senha de 8 a 30 caracteres"
+                  required
+                  autocomplete="new-password"
+                >
+                <button type="button" class="btn-mostrar-senha" aria-label="Mostrar ou ocultar senha">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                  </svg>
+                </button>
+              </div>
+              {% if form.senha.errors %}
+                <span class="campo-erro" role="alert">{{ form.senha.errors.0 }}</span>
+              {% endif %}
+            </div>
+
+            <div class="campo-grupo">
+              <label for="id_confirmacao_senha" class="campo-label">Confirmação de Senha *</label>
+              <div class="campo-input-icone">
+                <input
+                  type="password"
+                  id="id_confirmacao_senha"
+                  name="confirmacao_senha"
+                  class="campo-input {% if form.confirmacao_senha.errors %}campo-input--erro{% endif %}"
+                  placeholder="Repita sua senha exatamente igual"
+                  required
+                  autocomplete="new-password"
+                >
+                <button type="button" class="btn-mostrar-senha" aria-label="Mostrar ou ocultar confirmação de senha">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                  </svg>
+                </button>
+              </div>
+              {% if form.confirmacao_senha.errors %}
+                <span class="campo-erro" role="alert">{{ form.confirmacao_senha.errors.0 }}</span>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="campo-grupo">
+            <label for="id_cpf" class="campo-label">CPF *</label>
+            <input
+              type="text"
+              id="id_cpf"
+              name="cpf"
+              value="{{ form.cpf.value|default:'' }}"
+              class="campo-input {% if form.cpf.errors %}campo-input--erro{% endif %}"
+              placeholder="XXX.XXX.XXX-XX"
+              required
+              maxlength="14"
+              autocomplete="off"
+            >
+            {% if form.cpf.errors %}
+              <span class="campo-erro" role="alert">{{ form.cpf.errors.0 }}</span>
+            {% endif %}
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- Seção 02: Seu endereço em Maceió -->
+      <fieldset class="secao-cadastro">
+        <legend class="secao-cadastro__legenda">
+          <span class="secao-cadastro__numero" aria-hidden="true">02</span>
+          <span>Seu endereço em Maceió</span>
+        </legend>
+
+        <div class="grid-campos">
+          <div class="cep-linha">
+            <div class="campo-grupo cep-linha__campo">
+              <label for="id_cep" class="campo-label">CEP *</label>
+              <input
+                type="text"
+                id="id_cep"
+                name="cep"
+                value="{{ form.cep.value|default:'' }}"
+                class="campo-input {% if form.cep.errors %}campo-input--erro{% endif %}"
+                placeholder="00000-000"
+                required
+                maxlength="9"
+                autocomplete="postal-code"
+              >
+              {% if form.cep.errors %}
+                <span class="campo-erro" role="alert">{{ form.cep.errors.0 }}</span>
+              {% endif %}
+            </div>
+            <button type="button" class="btn btn--secundario btn-buscar-cep" id="btn-buscar-cep">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <span>Buscar CEP</span>
+            </button>
+            <span class="cep-dica" id="cep-feedback" aria-live="polite">Preencha o CEP para localizar seu endereço dinamicamente em Maceió/AL.</span>
+          </div>
+
+          <div class="grid-campos--2col">
+            <div class="campo-grupo">
+              <label for="id_logradouro" class="campo-label">Logradouro *</label>
+              <input
+                type="text"
+                id="id_logradouro"
+                name="logradouro"
+                value="{{ form.logradouro.value|default:'' }}"
+                class="campo-input {% if form.logradouro.errors %}campo-input--erro{% endif %}"
+                placeholder="Rua, avenida ou travessa"
+                required
+                autocomplete="street-address"
+              >
+              {% if form.logradouro.errors %}
+                <span class="campo-erro" role="alert">{{ form.logradouro.errors.0 }}</span>
+              {% endif %}
+            </div>
+            <div class="campo-grupo">
+              <label for="id_bairro" class="campo-label">Bairro *</label>
+              <input
+                type="text"
+                id="id_bairro"
+                name="bairro"
+                value="{{ form.bairro.value|default:'' }}"
+                class="campo-input {% if form.bairro.errors %}campo-input--erro{% endif %}"
+                placeholder="Informe seu bairro"
+                required
+              >
+              {% if form.bairro.errors %}
+                <span class="campo-erro" role="alert">{{ form.bairro.errors.0 }}</span>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="grid-campos--2col">
+            <div class="campo-grupo">
+              <label for="id_numero" class="campo-label">Número *</label>
+              <input
+                type="text"
+                id="id_numero"
+                name="numero"
+                value="{{ form.numero.value|default:'' }}"
+                class="campo-input {% if form.numero.errors %}campo-input--erro{% endif %}"
+                placeholder="Nº"
+                required
+              >
+              {% if form.numero.errors %}
+                <span class="campo-erro" role="alert">{{ form.numero.errors.0 }}</span>
+              {% endif %}
+            </div>
+            <div class="campo-grupo">
+              <label for="id_complemento" class="campo-label">Complemento</label>
+              <input
+                type="text"
+                id="id_complemento"
+                name="complemento"
+                value="{{ form.complemento.value|default:'' }}"
+                class="campo-input {% if form.complemento.errors %}campo-input--erro{% endif %}"
+                placeholder="Apartamento, bloco ou ponto de referência (opcional)"
+              >
+              {% if form.complemento.errors %}
+                <span class="campo-erro" role="alert">{{ form.complemento.errors.0 }}</span>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- Seção 03: Como podemos falar com você? -->
+      <fieldset class="secao-cadastro">
+        <legend class="secao-cadastro__legenda">
+          <span class="secao-cadastro__numero" aria-hidden="true">03</span>
+          <span>Como podemos falar com você?</span>
+        </legend>
+
+        <div class="grid-campos">
+          <div class="campo-grupo">
+            <label for="id_celular" class="campo-label">Celular *</label>
+            <div class="campo-input-icone">
+              <input
+                type="tel"
+                id="id_celular"
+                name="celular"
+                value="{{ form.celular.value|default:'' }}"
+                class="campo-input {% if form.celular.errors %}campo-input--erro{% endif %}"
+                placeholder="(82) 9XXXX-XXXX"
+                required
+                autocomplete="tel"
+                maxlength="15"
+              >
+              <span class="campo-icone-embutido" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+                  <line x1="12" y1="18" x2="12.01" y2="18"></line>
+                </svg>
+              </span>
+            </div>
+            {% if form.celular.errors %}
+              <span class="campo-erro" role="alert">{{ form.celular.errors.0 }}</span>
+            {% endif %}
+          </div>
+
+          <div class="caixa-aviso-azul" role="region" aria-label="Aviso de confirmação">
+            <div class="caixa-aviso-azul__icone" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              </svg>
+            </div>
+            <div class="caixa-aviso-azul__conteudo">
+              <p>Mantenha seus contatos atualizados para acompanhar o andamento dos chamados de iluminação pública em Maceió.</p>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- Rodapé de Ações com Cadastrar e Cancelar -->
+      <div class="cadastro-rodape-acoes" style="display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;">
+        <button type="button" class="btn btn--outline" id="btn-cancelar-cadastro">
+          Cancelar
+        </button>
+        <button type="submit" class="btn btn--primario-amarelo btn-cadastrar-submit">
+          <span>Cadastrar Cidadão</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </button>
+      </div>
+    </form>
+  </section>
+
+  <!-- Modal de Cancelamento de Cadastro -->
+  <dialog id="modal-cancelar-cadastro" class="modal-confirmacao">
+    <div class="modal-confirmacao__conteudo" role="alertdialog" aria-labelledby="modal-cad-titulo" aria-describedby="modal-cad-desc">
+      <h3 id="modal-cad-titulo" class="modal-confirmacao__titulo">Cancelar cadastro?</h3>
+      <p id="modal-cad-desc" class="modal-confirmacao__texto">Todas as alterações serão perdidas. Deseja realmente cancelar?</p>
+      <div class="modal-confirmacao__acoes">
+        <button type="button" class="btn btn--outline" id="btn-modal-cad-nao">Não</button>
+        <button type="button" class="btn btn--destrutivo" id="btn-modal-cad-sim">Sim</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Suporte 156 -->
+  <p class="link-suporte-156">
+    Precisa de ajuda para se cadastrar? Ligue <strong>156</strong>.
+  </p>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/viacep.js' %}"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Alternância de visibilidade da senha
+    var btnsSenha = document.querySelectorAll('.btn-mostrar-senha');
+    btnsSenha.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var input = this.parentElement.querySelector('input');
+        if (input) {
+          if (input.type === 'password') {
+            input.type = 'text';
+            this.setAttribute('aria-label', 'Ocultar senha');
+          } else {
+            input.type = 'password';
+            this.setAttribute('aria-label', 'Mostrar senha');
+          }
+        }
+      });
+    });
+
+    // Integração ViaCEP (RF001, RNF02, RNF07)
+    var viaCepController = ViaCEP.inicializar({
+      cepInput: 'id_cep',
+      logradouroInput: 'id_logradouro',
+      bairroInput: 'id_bairro',
+      numeroInput: 'id_numero',
+      btnBuscar: 'btn-buscar-cep',
+      feedbackEl: 'cep-feedback'
+    });
+
+    // Modal de cancelamento
+    var btnCancelar = document.getElementById('btn-cancelar-cadastro');
+    var modal = document.getElementById('modal-cancelar-cadastro');
+    var btnNao = document.getElementById('btn-modal-cad-nao');
+    var btnSim = document.getElementById('btn-modal-cad-sim');
+    var form = document.getElementById('form-cadastro-cidadao');
+
+    if (btnCancelar && modal) {
+      btnCancelar.addEventListener('click', function() {
+        modal.showModal();
+      });
+    }
+    if (btnNao && modal) {
+      btnNao.addEventListener('click', function() {
+        modal.close();
+      });
+    }
+    if (btnSim && modal && form) {
+      btnSim.addEventListener('click', function() {
+        form.reset();
+        var inputs = form.querySelectorAll('input:not([type="hidden"])');
+        inputs.forEach(function(inp) { inp.value = ''; });
+        if (viaCepController) viaCepController.limpar();
+        modal.close();
+      });
+    }
+  });
+</script>
+{% endblock %}

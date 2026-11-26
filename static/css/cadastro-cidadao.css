@@ -1,0 +1,206 @@
+/* ==========================================================================
+   cadastro-cidadao.css - Tela de cadastro do cidadão (Área pública)
+   Consome exclusivamente variáveis definidas em root.css.
+   ========================================================================== */
+
+.cadastro-cidadao-container {
+  max-width: 820px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Cabeçalho do Portal do Cidadão */
+.portal-cabecalho {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.portal-cabecalho__kicker {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cor-azul-destaque);
+  margin: 0;
+}
+
+.portal-cabecalho__titulo {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--cor-texto-escuro);
+  line-height: 1.2;
+  margin: 0;
+}
+
+.portal-cabecalho__subtitulo {
+  font-size: 0.9375rem;
+  color: var(--cor-texto-secundario);
+  margin: 0;
+}
+
+/* Cartão do Formulário */
+.cadastro-cartao {
+  background-color: var(--cor-fundo-cartao);
+  border: 1px solid var(--cor-borda-padrao);
+  border-radius: var(--raio-lg);
+  padding: 2rem;
+  box-shadow: var(--sombra-sm);
+}
+
+.cadastro-cartao__topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--cor-borda-padrao);
+  margin-bottom: 1.75rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.cadastro-cartao__titulo {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--cor-texto-principal);
+  margin: 0;
+}
+
+.cadastro-cartao__obrigatorio {
+  font-size: 0.75rem;
+  color: var(--cor-texto-mutado);
+}
+
+/* Fieldsets e Seções */
+.secao-cadastro {
+  border: none;
+  padding: 0;
+  margin: 0 0 2rem 0;
+}
+
+.secao-cadastro:last-of-type {
+  margin-bottom: 1.5rem;
+}
+
+.secao-cadastro__legenda {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--cor-texto-principal);
+  margin-bottom: 1.25rem;
+}
+
+.secao-cadastro__numero {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background-color: var(--cor-azul-escuro);
+  color: var(--cor-texto-claro);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+/* Layout em Grid para Campos */
+.grid-campos {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.grid-campos--2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+/* Linha de CEP com Busca */
+.cep-linha {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.cep-linha__campo {
+  max-width: 200px;
+  width: 100%;
+}
+
+.btn-buscar-cep {
+  height: 44px;
+  padding: 0 1.25rem;
+  font-size: 0.875rem;
+}
+
+.cep-dica {
+  font-size: 0.8125rem;
+  color: var(--cor-texto-mutado);
+  align-self: center;
+  margin-bottom: 0.25rem;
+}
+
+/* Rodapé de Ações do Formulário */
+.cadastro-rodape-acoes {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--cor-borda-padrao);
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.cadastro-lgpd {
+  font-size: 0.75rem;
+  color: var(--cor-texto-mutado);
+  max-width: 44ch;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.btn-cadastrar-submit {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .grid-campos--2col {
+    grid-template-columns: 1fr;
+  }
+
+  .cadastro-cartao {
+    padding: 1.25rem;
+  }
+
+  .cep-linha {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .cep-linha__campo {
+    max-width: 100%;
+  }
+
+  .cadastro-rodape-acoes {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .btn-cadastrar-submit {
+    width: 100%;
+    justify-content: center;
+  }
+}

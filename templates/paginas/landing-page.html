@@ -1,0 +1,89 @@
+{% extends 'base_publico.html' %}
+{% load static %}
+
+{% block title %}MaisLuz • Iluminação Pública de Maceió{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/landing-page.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="landing-container">
+  <!-- Hero Section -->
+  <section class="landing-hero" aria-labelledby="titulo-hero">
+    <div class="landing-hero__topo">
+      <span class="badge badge--gratuito">Serviço gratuito</span>
+    </div>
+
+    <h1 id="titulo-hero" class="landing-hero__titulo">
+      Uma cidade mais iluminada e segura começa com você.
+    </h1>
+
+    <p class="landing-hero__descricao">
+      Acompanhe, registre e ajude a prefeitura a manter a iluminação de Maceió funcionando. Sem burocracia, direto do seu celular ou computador.
+    </p>
+
+    <div class="landing-hero__acoes">
+      {% if user.is_authenticated and user.is_cidadao %}
+        <a href="{% url 'registrar_ocorrencia' %}" class="btn btn--primario-amarelo">
+          Registrar problema
+        </a>
+      {% else %}
+        <a href="{% url 'cadastro_cidadao' %}" class="btn btn--primario-amarelo">
+          Registrar problema
+        </a>
+      {% endif %}
+      <a href="{% url 'contas:entrar' %}" class="btn btn--outline">
+        Já tenho conta / Entrar
+      </a>
+    </div>
+  </section>
+
+  <!-- Como Funciona -->
+  <section class="como-funciona" aria-labelledby="titulo-como-funciona">
+    <h2 id="titulo-como-funciona" class="como-funciona__titulo">
+      Como funciona o MaisLuz Maceió?
+    </h2>
+
+    <div class="como-funciona__grid">
+      <article class="passo-card">
+        <span class="passo-card__numero" aria-hidden="true">01</span>
+        <h3 class="passo-card__titulo">Identifique o problema</h3>
+        <p class="passo-card__descricao">
+          Veja um poste apagado, luz oscilando ou fiação danificada no seu bairro.
+        </p>
+      </article>
+
+      <article class="passo-card">
+        <span class="passo-card__numero" aria-hidden="true">02</span>
+        <h3 class="passo-card__titulo">Abra o chamado em minutos</h3>
+        <p class="passo-card__descricao">
+          Informe o endereço, adicione uma foto do local e envie a solicitação.
+        </p>
+      </article>
+
+      <article class="passo-card">
+        <span class="passo-card__numero" aria-hidden="true">03</span>
+        <h3 class="passo-card__titulo">Acompanhe a solução</h3>
+        <p class="passo-card__descricao">
+          Receba um número de protocolo para ver o status da equipe técnica até a conclusão.
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <!-- Notificação / Acompanhamento -->
+  <aside class="alerta-acompanhamento" aria-label="Informações sobre acompanhamento de chamados">
+    <div class="alerta-acompanhamento__icone" aria-hidden="true">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+      </svg>
+    </div>
+    <div class="alerta-acompanhamento__texto">
+      <strong>Você acompanha cada etapa.</strong>
+      <span>Após o envio, o protocolo fica disponível em Minhas ocorrências.</span>
+    </div>
+  </aside>
+</div>
+{% endblock %}
