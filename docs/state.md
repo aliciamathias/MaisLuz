@@ -15,7 +15,20 @@ Nada.
   - Specs reescritas alinhadas ao PRD do MaisLuz: `0001-fundacao.md`, `0002-autenticacao.md`, `0003-ocorrencias.md`, `0004-auditoria.md` e `0005-gestao-funcionarios.md`.
   - Remoção dos arquivos obsoletos do blog (`0003-posts.md`, `0004-comentarios.md`, `0005-publicacoes-iniciais.md`).
   - Atualização de `docs/adr/0003-conteudo-em-texto-puro.md` e skill de Python para o domínio do MaisLuz.
-- Suíte completa de 65 testes automatizados executando com 100% de aprovação (OK).
+- Criação e aplicação de trigger, índices e views no banco MaisLuz (PostgreSQL):
+  - Tabela `historico_ocorrencias` e trigger `trg_historico_ocorrencias_status` gravando `id`, `status_anterior`, `status_novo` e `data_alteracao` em mudanças de status.
+  - Índices otimizados evitando duplicações onde já havia PK ou UNIQUE (`cpf`, `matricula_funcional`, `protocolo`), indexando `email`, `status`, `bairro`, `numero_poste`, `data_registro`.
+  - View `vw_painel_ocorrencias_ativas` com dados da ocorrência e cidadão, filtrando status 'Pendente' e 'Em progresso'.
+  - Script DDL em `docs/database/triggers_indices_views.sql` e migração `ocorrencias.0003_trigger_indices_views`.
+- Criação e configuração de roles RBAC no PostgreSQL (`suporte_maisluz` e `dev_maisluz`):
+  - Permissões de SELECT, INSERT e UPDATE nas tabelas e sequências do schema public.
+  - Bloqueio explícito de DELETE com REVOKE em todas as tabelas atuais e padrão.
+  - Script DDL em `docs/database/roles_permissoes.sql` e comando `python manage.py setup_roles --verify`.
+- Criação de constraints CHECK no PostgreSQL:
+  - `chk_usuario_nome_completo_min_length`: valida comprimento >= 3 caracteres para cidadãos e funcionários.
+  - `chk_ocorrencia_status_valido`: restringe status a 'Pendente', 'Em progresso', 'Concluído' e 'Excluído'.
+  - Script DDL em `docs/database/constraints.sql` e migração `ocorrencias.0004_check_constraints`.
+- Suíte de 69 testes automatizados executando com 100% de aprovação (OK).
 
 ## Próximos passos
 
